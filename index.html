@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brand Post Creator</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <!-- Шрифты: Raleway для постов, Inter для интерфейса -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Raleway:wght@400;600;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="app-layout">
+
+    <!-- ==================== ЛЕВАЯ ПАНЕЛЬ ==================== -->
+    <div class="sidebar">
+
+        <div class="app-logo">
+            <span class="dot"></span>
+            BRAND POST CREATOR
+        </div>
+
+        <!-- ФОРМАТ -->
+        <div class="section">
+            <div class="section-title">📐 Формат</div>
+            <div class="format-grid">
+                <button class="format-btn active" data-width="1080" data-height="1080" onclick="setFormat(this)">
+                    <span class="format-icon">◻️</span>
+                    <span class="format-label">Instagram</span>
+                    <span class="format-size">1080×1080</span>
+                </button>
+                <button class="format-btn" data-width="1080" data-height="1920" onclick="setFormat(this)">
+                    <span class="format-icon">📱</span>
+                    <span class="format-label">Stories</span>
+                    <span class="format-size">1080×1920</span>
+                </button>
+                <button class="format-btn" data-width="1200" data-height="630" onclick="setFormat(this)">
+                    <span class="format-icon">🖥️</span>
+                    <span class="format-label">Facebook</span>
+                    <span class="format-size">1200×630</span>
+                </button>
+                <button class="format-btn" data-width="1600" data-height="900" onclick="setFormat(this)">
+                    <span class="format-icon">🐦</span>
+                    <span class="format-label">Twitter / X</span>
+                    <span class="format-size">1600×900</span>
+                </button>
+                <button class="format-btn" data-width="1080" data-height="1350" onclick="setFormat(this)">
+                    <span class="format-icon">📸</span>
+                    <span class="format-label">IG Портрет</span>
+                    <span class="format-size">1080×1350</span>
+                </button>
+                <button class="format-btn" data-width="1920" data-height="1080" onclick="setFormat(this)">
+                    <span class="format-icon">🎬</span>
+                    <span class="format-label">YouTube</span>
+                    <span class="format-size">1920×1080</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- ТЕКСТ -->
+        <div class="section">
+            <div class="section-title">✏️ Текст</div>
+
+            <!-- Заголовок — теперь textarea для многострочности -->
+            <div class="input-group">
+                <label>Заголовок</label>
+                <textarea id="headingInput" oninput="updateCanvas()" class="heading-textarea" rows="2">важная информация</textarea>
+            </div>
+
+            <!-- Подзаголовок -->
+            <div class="input-group">
+                <div class="label-with-toggle">
+                    <label>Подзаголовок</label>
+                    <label class="toggle-switch small">
+                        <input type="checkbox" id="toggleSubtext" checked onchange="updateCanvas()">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <textarea id="subtextInput" oninput="updateCanvas()" maxlength="120">описание вашего поста</textarea>
+            </div>
+
+            <div class="input-group">
+                <label>Размер заголовка</label>
+                <div class="slider-row">
+                    <input type="range" id="fontSizeSlider" min="20" max="120" value="42" oninput="updateCanvas()">
+                    <span class="slider-value" id="fontSizeValue">42px</span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Цвет текста</label>
+                <div class="color-options">
+                    <div class="color-swatch active" style="background:#ffffff" data-color="#ffffff" onclick="setTextColor(this)"></div>
+                    <div class="color-swatch" style="background:#000000; border:1px solid #555;" data-color="#000000" onclick="setTextColor(this)"></div>
+                    <div class="color-swatch" style="background:#6c5ce7" data-color="#6c5ce7" onclick="setTextColor(this)"></div>
+                    <div class="color-swatch" style="background:#00cec9" data-color="#00cec9" onclick="setTextColor(this)"></div>
+                    <div class="color-swatch" style="background:#fdcb6e" data-color="#fdcb6e" onclick="setTextColor(this)"></div>
+                    <div class="color-swatch" style="background:#e17055" data-color="#e17055" onclick="setTextColor(this)"></div>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>↔️ Текст по горизонтали</label>
+                <div class="slider-row">
+                    <input type="range" id="textPosXSlider" min="0" max="100" value="50" step="1" oninput="updateCanvas()">
+                    <span class="slider-value" id="textPosXValue">50%</span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>↕️ Текст по вертикали</label>
+                <div class="slider-row">
+                    <input type="range" id="textPosYSlider" min="0" max="100" value="50" step="1" oninput="updateCanvas()">
+                    <span class="slider-value" id="textPosYValue">50%</span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Выравнивание</label>
+                <div class="align-buttons">
+                    <button class="align-btn" data-align="left" onclick="setTextAlign(this)">◧</button>
+                    <button class="align-btn active" data-align="center" onclick="setTextAlign(this)">◫</button>
+                    <button class="align-btn" data-align="right" onclick="setTextAlign(this)">◨</button>
+                </div>
+            </div>
+
+            <button class="btn-reset" onclick="resetTextPosition()">↺ Сбросить позицию текста</button>
+        </div>
+
+        <!-- ФОТОГРАФИЯ -->
+        <div class="section">
+            <div class="section-title">🖼️ Фотография</div>
+
+            <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
+                <input type="file" id="fileInput" accept="image/*" onchange="handleImageUpload(event)">
+                <div id="uploadPlaceholder">
+                    <div class="upload-icon">📷</div>
+                    <div class="upload-text">Нажмите или перетащите фото</div>
+                </div>
+                <img id="uploadPreview" style="display:none;" alt="">
+            </div>
+
+            <div class="input-group" style="margin-top:12px;">
+                <label>🔍 Масштаб фото</label>
+                <div class="slider-row">
+                    <input type="range" id="zoomSlider" min="100" max="400" value="100" step="1" oninput="updateCanvas()">
+                    <span class="slider-value" id="zoomValue">×1.0</span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>↔️ Фото по горизонтали</label>
+                <div class="slider-row">
+                    <input type="range" id="posXSlider" min="-50" max="50" value="0" step="1" oninput="updateCanvas()">
+                    <span class="slider-value" id="posXValue">0%</span>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>↕️ Фото по вертикали</label>
+                <div class="slider-row">
+                    <input type="range" id="posYSlider" min="-50" max="50" value="0" step="1" oninput="updateCanvas()">
+                    <span class="slider-value" id="posYValue">0%</span>
+                </div>
+            </div>
+
+            <button class="btn-reset" onclick="resetImagePosition()">↺ Сбросить позицию фото</button>
+
+            <div class="input-group" style="margin-top:12px;">
+                <label>🌑 Затемнение фона</label>
+                <div class="slider-row">
+                    <input type="range" id="dimSlider" min="0" max="80" value="30" oninput="updateCanvas()">
+                    <span class="slider-value" id="dimValue">30%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ЭЛЕМЕНТЫ ДИЗАЙНА -->
+        <div class="section">
+            <div class="section-title">✦ Элементы дизайна</div>
+
+            <div class="toggle-row">
+                <label>Рамка</label>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="toggleFrame" checked onchange="updateCanvas()">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+            <div class="toggle-row">
+                <label>Уголки</label>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="toggleCorners" checked onchange="updateCanvas()">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+            <div class="toggle-row">
+                <label>Акцентная линия</label>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="toggleAccentLine" checked onchange="updateCanvas()">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+
+            <!-- ЛОГОТИП -->
+            <div class="sub-section">
+                <div class="toggle-row">
+                    <label>Логотип</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="toggleLogo" checked onchange="updateCanvas()">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+
+                <div class="input-group" style="margin-top:8px;">
+                    <label>Размер логотипа</label>
+                    <div class="slider-row">
+                        <input type="range" id="logoSizeSlider" min="8" max="40" value="14" step="1" oninput="updateCanvas()">
+                        <span class="slider-value" id="logoSizeValue">14px</span>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Позиция логотипа</label>
+                    <div class="logo-position-grid">
+                        <button class="logo-pos-btn" data-pos="top-left" onclick="setLogoPosition(this)">↖</button>
+                        <button class="logo-pos-btn" data-pos="top-center" onclick="setLogoPosition(this)">↑</button>
+                        <button class="logo-pos-btn" data-pos="top-right" onclick="setLogoPosition(this)">↗</button>
+                        <button class="logo-pos-btn" data-pos="bottom-left" onclick="setLogoPosition(this)">↙</button>
+                        <button class="logo-pos-btn" data-pos="bottom-center" onclick="setLogoPosition(this)">↓</button>
+                        <button class="logo-pos-btn active" data-pos="bottom-right" onclick="setLogoPosition(this)">↘</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- СКАЧИВАНИЕ -->
+        <div class="section">
+            <div class="section-title">💾 Скачать</div>
+            <div class="download-buttons">
+                <button class="btn-download btn-primary" onclick="downloadPost(false)">
+                    📥 Скачать пост (PNG)
+                </button>
+                <button class="btn-download btn-secondary" onclick="downloadPost(true)">
+                    🔲 Скачать подложку (без фото)
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ==================== ХОЛСТ ==================== -->
+    <div class="canvas-area">
+        <div>
+            <div class="canvas-wrapper">
+                <div class="canvas" id="postCanvas">
+
+                    <div class="canvas-placeholder-pattern" id="placeholderPattern"></div>
+                    <div class="canvas-bg" id="canvasBg"></div>
+                    <div class="canvas-overlay-dim" id="canvasDim"></div>
+
+                    <div class="identity-layer" id="identityLayer">
+                        <div class="identity-frame" id="idFrame"></div>
+                        <div class="identity-corner top-left" id="idCornerTL"></div>
+                        <div class="identity-corner top-right" id="idCornerTR"></div>
+                        <div class="identity-corner bottom-left" id="idCornerBL"></div>
+                        <div class="identity-corner bottom-right" id="idCornerBR"></div>
+                    </div>
+
+                    <div class="identity-accent-line" id="accentLine"></div>
+
+                    <!-- Текстовый блок — innerHTML для поддержки <br> -->
+                    <div class="canvas-text-block" id="textBlock">
+                        <div class="canvas-heading" id="canvasHeading">важная информация</div>
+                        <div class="canvas-subtext" id="canvasSubtext">описание вашего поста</div>
+                    </div>
+
+                    <div class="identity-logo" id="idLogo">
+                        <span class="logo-dot"></span>
+                        BRAND
+                    </div>
+
+                </div>
+            </div>
+            <div class="canvas-format-label" id="formatLabel">Instagram — 1080×1080</div>
+        </div>
+    </div>
+
+</div>
+
+<script src="js/app.js"></script>
+
+</body>
+</html>
