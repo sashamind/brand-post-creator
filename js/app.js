@@ -28,7 +28,7 @@ const state = {
     showLogo: true,
     showAccentLine: true,
 
-    logoSize: 14,
+    logoSize: 36,
     logoPosition: 'bottom-right',
 };
 
