@@ -442,4 +442,38 @@ async function downloadPost(overlayOnly) {
 // =====================================================
 // ЗАПУСК
 // =====================================================
-updateCanvas();
+
+// Загружаем фото по умолчанию
+function loadDefaultImage() {
+    const img = new Image();
+    img.onload = function () {
+        // Рисуем на canvas чтобы получить dataURL
+        const cvs = document.createElement('canvas');
+        cvs.width = img.naturalWidth;
+        cvs.height = img.naturalHeight;
+        const ctx = cvs.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+
+        const dataUrl = cvs.toDataURL('image/jpeg', 0.92);
+        state.imageDataUrl = dataUrl;
+
+        // Показываем превью в боковой панели
+        const preview = document.getElementById('uploadPreview');
+        preview.src = dataUrl;
+        preview.style.display = 'block';
+        document.getElementById('uploadPlaceholder').style.display = 'none';
+        document.getElementById('uploadArea').classList.add('has-image');
+
+        updateCanvas();
+    };
+
+    img.onerror = function () {
+        // Если фото не найдено — просто запускаем без него
+        console.warn('Фото по умолчанию не найдено (assets/default-bg.jpg)');
+        updateCanvas();
+    };
+
+    img.src = 'assets/default-bg.jpg';
+}
+
+loadDefaultImage();
