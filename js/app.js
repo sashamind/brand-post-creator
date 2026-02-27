@@ -23,7 +23,7 @@ const state = {
     imagePosX: 0,
     imagePosY: 0,
 
-    showFrame: true,
+    showFrame: false,
     showLogo: true,
     showAccentLine: true,
     frameColor: 'rgba(255,255,255,0.25)',
