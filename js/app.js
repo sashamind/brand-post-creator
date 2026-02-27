@@ -419,15 +419,26 @@ function updateCanvas() {
     wrapper.style.height = Math.round(state.height * scale) + 'px';
 
     // --- Фото фона ---
-    if (state.imageDataUrl) {
-        bgDiv.style.backgroundImage = `url(${state.imageDataUrl})`;
-        bgDiv.style.display = 'block';
-        bgDiv.style.backgroundSize = state.imageZoom + '%';
-        const posX = calculateBgPosition(state.imagePosX, state.imageZoom);
-        const posY = calculateBgPosition(state.imagePosY, state.imageZoom);
-        bgDiv.style.backgroundPosition = `${posX} ${posY}`;
-        pattern.style.display = 'none';
+    // --- Фото фона ---
+// backgroundSize: "cover" гарантирует что фото всегда покрывает весь холст
+// без пустых полос. Zoom работает поверх cover — умножаем на процент.
+if (state.imageDataUrl) {
+    bgDiv.style.backgroundImage = `url(${state.imageDataUrl})`;
+    bgDiv.style.display = 'block';
+
+    // Cover = 100%. При зуме увеличиваем пропорционально
+    if (state.imageZoom <= 100) {
+        bgDiv.style.backgroundSize = 'cover';
     } else {
+        bgDiv.style.backgroundSize = state.imageZoom + '%';
+    }
+
+    // Позиция: 50% = центр, сдвигаем ползунками
+    const posX = (50 - state.imagePosX) + '%';
+    const posY = (50 - state.imagePosY) + '%';
+    bgDiv.style.backgroundPosition = `${posX} ${posY}`;
+    pattern.style.display = 'none';
+}else {
         bgDiv.style.backgroundImage = '';
         bgDiv.style.display = 'none';
         pattern.style.display = 'block';
