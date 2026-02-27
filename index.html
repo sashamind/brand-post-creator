@@ -8,7 +8,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <!-- Шрифты: Raleway для постов, Inter для интерфейса -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Raleway:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Raleway:ital,wght@0,400;0,600;0,800;1,800&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -71,7 +71,7 @@
                 <div class="label-with-toggle">
                     <label>Подзаголовок</label>
                     <label class="toggle-switch small">
-                        <input type="checkbox" id="toggleSubtext" checked onchange="updateCanvas()">
+                        <input type="checkbox" id="toggleSubtext" onchange="updateCanvas()">
                         <span class="toggle-slider"></span>
                     </label>
                 </div>
@@ -81,8 +81,8 @@
             <div class="input-group">
                 <label>Размер заголовка</label>
                 <div class="slider-row">
-                    <input type="range" id="fontSizeSlider" min="20" max="120" value="42" oninput="updateCanvas()">
-                    <span class="slider-value" id="fontSizeValue">42px</span>
+                    <input type="range" id="fontSizeSlider" min="40" max="90" value="50" oninput="updateCanvas()">
+<span class="slider-value" id="fontSizeValue">50px</span>
                 </div>
             </div>
 
@@ -113,13 +113,20 @@
                     <span class="slider-value" id="textPosYValue">50%</span>
                 </div>
             </div>
-
+<div class="input-group">
+    <div class="label-with-toggle">
+        <label>Курсив (Italic)</label>
+        <label class="toggle-switch small">
+            <input type="checkbox" id="toggleItalic" onchange="updateCanvas()">
+            <span class="toggle-slider"></span>
+        </label>
+    </div>
+</div>
             <div class="input-group">
                 <label>Выравнивание</label>
                 <div class="align-buttons">
-                    <button class="align-btn" data-align="left" onclick="setTextAlign(this)">◧</button>
-                    <button class="align-btn active" data-align="center" onclick="setTextAlign(this)">◫</button>
-                    <button class="align-btn" data-align="right" onclick="setTextAlign(this)">◨</button>
+                   <button class="align-btn active" data-align="left" onclick="setTextAlign(this)">◧</button>
+<button class="align-btn" data-align="center" onclick="setTextAlign(this)">◫</button>
                 </div>
             </div>
 

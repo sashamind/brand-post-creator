@@ -10,10 +10,11 @@ const state = {
 
     heading: 'важная информация',
     subtext: 'описание вашего поста',
-    showSubtext: true,
-    fontSize: 42,
+    showSubtext: false,
+    fontSize: 50,
     textColor: '#ffffff',
-    textAlign: 'center',
+    textAlign: 'left',
+    headingItalic: false,
     textPosX: 50,
     textPosY: 50,
 
@@ -447,15 +448,19 @@ if (state.imageDataUrl) {
     // --- Затемнение ---
     dim.style.background = `rgba(0, 0, 0, ${state.dimOpacity})`;
 
-    // --- Заголовок ---
-    heading.innerHTML = textToHtml(state.heading);
-    heading.style.fontSize = state.fontSize + 'px';
-    heading.style.color = state.textColor;
+    // --- Italic (только заголовок) ---
+state.headingItalic = document.getElementById('toggleItalic').checked;
+heading.style.fontStyle = state.headingItalic ? 'italic' : 'normal';
+
+// --- Заголовок ---
+heading.innerHTML = textToHtml(state.heading);
+heading.style.fontSize = state.fontSize + 'px';
+heading.style.color = state.textColor;
 
     // --- Подзаголовок ---
     if (state.showSubtext) {
         subtextEl.innerHTML = textToHtml(state.subtext);
-        subtextEl.style.fontSize = Math.round(state.fontSize * 0.38) + 'px';
+        subtextEl.style.fontSize = Math.round(state.fontSize * 0.76) + 'px';
         subtextEl.style.color = state.textColor;
         subtextEl.style.display = '';
     } else {
