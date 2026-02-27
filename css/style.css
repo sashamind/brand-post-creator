@@ -615,9 +615,8 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 .sponsor-logo-img {
-    height: 100%;
     width: auto;
-    max-width: 150px;
+    max-width: 200px;
     object-fit: contain;
 }
 
