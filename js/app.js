@@ -18,7 +18,7 @@ const state = {
     textPosY: 50,
 
     imageDataUrl: null,
-    dimOpacity: 0.3,
+    dimOpacity: 0.2,
     imageZoom: 100,
     imagePosX: 0,
     imagePosY: 0,
