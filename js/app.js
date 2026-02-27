@@ -8,8 +8,8 @@ const state = {
     height: 1080,
     formatName: 'Квадрат',
 
-    heading: 'важная информация',
-    subtext: 'описание вашего поста',
+    heading: 'важная\nинформация',
+subtext: 'забег переносится',
     showSubtext: false,
     fontSize: 50,
     textColor: '#ffffff',
@@ -456,11 +456,22 @@ function updateCanvas() {
         subtextEl.style.display = 'none';
     }
 
-    // --- Позиция текста ---
-    const translateX = -state.textPosX;
-    const translateY = -state.textPosY;
-    textBlock.style.left = state.textPosX + '%';
-    textBlock.style.top = state.textPosY + '%';
+        // --- Позиция текста (с ограничением 30px от краёв) ---
+    // Вычисляем минимальный и максимальный % чтобы текст не подходил
+    // ближе 30px к любому краю холста
+    const minPctX = (30 / state.width) * 100;
+    const maxPctX = 100 - minPctX;
+    const minPctY = (30 / state.height) * 100;
+    const maxPctY = 100 - minPctY;
+
+    // Зажимаем значения в допустимый диапазон
+    const clampedX = Math.max(minPctX, Math.min(maxPctX, state.textPosX));
+    const clampedY = Math.max(minPctY, Math.min(maxPctY, state.textPosY));
+
+    const translateX = -clampedX;
+    const translateY = -clampedY;
+    textBlock.style.left = clampedX + '%';
+    textBlock.style.top = clampedY + '%';
     textBlock.style.transform = `translate(${translateX}%, ${translateY}%)`;
     textBlock.style.textAlign = state.textAlign;
 
