@@ -16,6 +16,8 @@ const state = {
     headingItalic: false,
     textPosX: 50,
     textPosY: 50,
+    textBg: false,
+    textBgColor: 'rgba(0,0,0,0.5)',
 
     imageDataUrl: null,
     dimOpacity: 0.2,
@@ -90,7 +92,15 @@ function setTextAlign(btn) {
     updateCanvas();
 }
 
-
+// =====================================================
+// ЦВЕТ ПОДЛОЖКИ ТЕКСТА
+// =====================================================
+function setTextBgColor(swatch) {
+    document.querySelectorAll('.text-bg-color').forEach(function(s) { s.classList.remove('active'); });
+    swatch.classList.add('active');
+    state.textBgColor = swatch.dataset.color;
+    updateCanvas();
+}
 // =====================================================
 // ЦВЕТ РАМКИ
 // =====================================================
@@ -388,6 +398,10 @@ function updateCanvas() {
     state.showFrame = document.getElementById('toggleFrame').checked;
     state.showLogo = document.getElementById('toggleLogo').checked;
     state.showAccentLine = document.getElementById('toggleAccentLine').checked;
+        state.textBg = document.getElementById('toggleTextBg').checked;
+
+    // Показываем/прячем выбор цвета подложки
+    document.getElementById('textBgColorRow').style.display = state.textBg ? 'block' : 'none';
     state.logoSize = parseInt(document.getElementById('logoSizeSlider').value);
         // Считываем индивидуальные множители размера
     for (var s = 1; s <= 3; s++) {
@@ -472,10 +486,21 @@ function updateCanvas() {
     var clampedX = Math.max(minPctX, Math.min(maxPctX, state.textPosX));
     var clampedY = Math.max(minPctY, Math.min(maxPctY, state.textPosY));
 
-    textBlock.style.left = clampedX + '%';
+        textBlock.style.left = clampedX + '%';
     textBlock.style.top = clampedY + '%';
     textBlock.style.transform = 'translate(' + (-clampedX) + '%, ' + (-clampedY) + '%)';
     textBlock.style.textAlign = state.textAlign;
+
+    // --- Подложка под текст ---
+    if (state.textBg) {
+        textBlock.style.background = state.textBgColor;
+        textBlock.style.borderRadius = '25px';
+        textBlock.style.padding = '20px 30px';
+    } else {
+        textBlock.style.background = 'none';
+        textBlock.style.borderRadius = '0';
+        textBlock.style.padding = '0';
+    }
 
     // --- Акцентная линия ---
     if (state.showAccentLine) {

@@ -123,6 +123,26 @@
         </label>
     </div>
 </div>
+<div class="input-group">
+    <div class="label-with-toggle">
+        <label>Подложка под текст</label>
+        <label class="toggle-switch small">
+            <input type="checkbox" id="toggleTextBg" onchange="updateCanvas()">
+            <span class="toggle-slider"></span>
+        </label>
+    </div>
+    <div id="textBgColorRow" style="display:none; margin-top:8px;">
+        <label>Цвет подложки</label>
+        <div class="color-options">
+            <div class="color-swatch text-bg-color active" style="background:rgba(0,0,0,0.5); border:1px solid #555;" data-color="rgba(0,0,0,0.5)" onclick="setTextBgColor(this)"></div>
+            <div class="color-swatch text-bg-color" style="background:rgba(0,0,0,0.75); border:1px solid #555;" data-color="rgba(0,0,0,0.75)" onclick="setTextBgColor(this)"></div>
+            <div class="color-swatch text-bg-color" style="background:rgba(255,255,255,0.3);" data-color="rgba(255,255,255,0.3)" onclick="setTextBgColor(this)"></div>
+            <div class="color-swatch text-bg-color" style="background:rgba(108,92,231,0.5);" data-color="rgba(108,92,231,0.5)" onclick="setTextBgColor(this)"></div>
+            <div class="color-swatch text-bg-color" style="background:rgba(0,206,201,0.5);" data-color="rgba(0,206,201,0.5)" onclick="setTextBgColor(this)"></div>
+            <div class="color-swatch text-bg-color" style="background:rgba(225,112,85,0.5);" data-color="rgba(225,112,85,0.5)" onclick="setTextBgColor(this)"></div>
+        </div>
+    </div>
+</div>
             <div class="input-group">
                 <label>Выравнивание</label>
                 <div class="align-buttons">
