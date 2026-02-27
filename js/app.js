@@ -33,10 +33,17 @@ const state = {
     logoPosition: 'bottom-right',
     logoVerticalPos: 'bottom',
 
-    logoImages: {
+        logoImages: {
         1: 'assets/logo1.svg',
         2: 'assets/logo2.svg',
         3: 'assets/logo3.svg'
+    },
+
+    // Индивидуальный множитель размера каждого логотипа (в процентах)
+    logoIndividualSize: {
+        1: 100,
+        2: 100,
+        3: 100
     }
 };
 
@@ -382,6 +389,11 @@ function updateCanvas() {
     state.showLogo = document.getElementById('toggleLogo').checked;
     state.showAccentLine = document.getElementById('toggleAccentLine').checked;
     state.logoSize = parseInt(document.getElementById('logoSizeSlider').value);
+        // Считываем индивидуальные множители размера
+    for (var s = 1; s <= 3; s++) {
+        state.logoIndividualSize[s] = parseInt(document.getElementById('logoIndSize' + s).value);
+        document.getElementById('logoIndSizeValue' + s).textContent = state.logoIndividualSize[s] + '%';
+    }
 
     // --- Подписи ползунков ---
     document.getElementById('fontSizeValue').textContent = state.fontSize + 'px';
@@ -492,11 +504,33 @@ function updateCanvas() {
         frameEl.style.display = 'none';
     }
 
-    // --- ЛОГОТИПЫ СПОНСОРОВ ---
+        // --- ЛОГОТИПЫ СПОНСОРОВ ---
     if (state.showLogo) {
         sponsorContainer.style.display = 'flex';
 
         var textFontSize = Math.round(state.logoSize * 0.35);
+
+        // Определяем выравнивание для 1 логотипа по его позиции
+        // Это нужно чтобы лого рос "от угла" а не от центра
+        var singleAlignItems = 'center';     // вертикальное выравнивание внутри контейнера
+        var singleJustify = 'center';        // горизонтальное выравнивание
+
+        if (state.logoCount === 1) {
+            // Вертикаль: top = прижат к верху, bottom = прижат к низу
+            if (state.logoPosition.indexOf('top') !== -1) {
+                singleAlignItems = 'flex-start';
+            } else if (state.logoPosition.indexOf('bottom') !== -1) {
+                singleAlignItems = 'flex-end';
+            }
+            // Горизонталь: left = прижат влево, right = прижат вправо
+            if (state.logoPosition.indexOf('left') !== -1) {
+                singleJustify = 'flex-start';
+            } else if (state.logoPosition.indexOf('right') !== -1) {
+                singleJustify = 'flex-end';
+            } else {
+                singleJustify = 'center';
+            }
+        }
 
         for (var i = 1; i <= 3; i++) {
             var logoEl = document.getElementById('sponsorLogo' + i);
@@ -510,8 +544,14 @@ function updateCanvas() {
             if (i <= state.logoCount) {
                 logoEl.style.display = 'flex';
 
-                // Назначаем классы: первый — влево, последний — вправо, остальные — центр
-                if (state.logoCount >= 2) {
+                // Для 1 логотипа — выравнивание по углу
+                if (state.logoCount === 1) {
+                    logoEl.style.justifyContent = singleJustify;
+                    logoEl.style.alignItems = singleAlignItems;
+                } else {
+                    // Для 2-3 логотипов — классы лево/центр/право
+                    logoEl.style.justifyContent = '';
+                    logoEl.style.alignItems = '';
                     if (i === 1) {
                         logoEl.classList.add('logo-first');
                     } else if (i === state.logoCount) {
@@ -521,11 +561,12 @@ function updateCanvas() {
                     }
                 }
 
-                if (state.logoImages[i]) {
-                    // Есть картинка — показываем с размером из ползунка
+                                if (state.logoImages[i]) {
+                    // Есть картинка — размер = базовый × индивидуальный множитель
+                    var individualHeight = Math.round(state.logoSize * state.logoIndividualSize[i] / 100);
                     imgEl.src = state.logoImages[i];
                     imgEl.style.display = 'block';
-                    imgEl.style.height = state.logoSize + 'px';
+                    imgEl.style.height = individualHeight + 'px';
                     imgEl.style.width = 'auto';
                     imgEl.style.maxWidth = 'none';
                     dotEl.style.display = 'none';

@@ -262,7 +262,7 @@
                     </div>
                 </div>
 
-                <div class="input-group">
+               <div class="input-group">
     <label>Логотипы</label>
 
     <!-- Логотип 1 -->
@@ -272,7 +272,13 @@
             <span class="logo-upload-placeholder" id="logoPlaceholder1" style="display:none;">1</span>
             <img id="logoPreview1" class="logo-preview-img" src="assets/logo1.svg" alt="">
         </div>
-        <span class="logo-upload-label">Логотип 1</span>
+        <div class="logo-row-right">
+            <span class="logo-upload-label">Логотип 1</span>
+            <div class="logo-individual-slider">
+                <input type="range" id="logoIndSize1" min="50" max="150" value="100" step="1" oninput="updateCanvas()">
+                <span class="slider-value" id="logoIndSizeValue1">100%</span>
+            </div>
+        </div>
         <button class="logo-swap-btn" onclick="swapLogos(1, 2)" title="Поменять местами">⇄</button>
         <button class="logo-remove-btn" id="logoRemove1" onclick="removeLogo(1)">✕</button>
     </div>
@@ -284,7 +290,13 @@
             <span class="logo-upload-placeholder" id="logoPlaceholder2" style="display:none;">2</span>
             <img id="logoPreview2" class="logo-preview-img" src="assets/logo2.svg" alt="">
         </div>
-        <span class="logo-upload-label">Логотип 2</span>
+        <div class="logo-row-right">
+            <span class="logo-upload-label">Логотип 2</span>
+            <div class="logo-individual-slider">
+                <input type="range" id="logoIndSize2" min="50" max="150" value="100" step="1" oninput="updateCanvas()">
+                <span class="slider-value" id="logoIndSizeValue2">100%</span>
+            </div>
+        </div>
         <button class="logo-swap-btn" onclick="swapLogos(2, 3)" title="Поменять местами">⇄</button>
         <button class="logo-remove-btn" id="logoRemove2" onclick="removeLogo(2)">✕</button>
     </div>
@@ -296,10 +308,16 @@
             <span class="logo-upload-placeholder" id="logoPlaceholder3" style="display:none;">3</span>
             <img id="logoPreview3" class="logo-preview-img" src="assets/logo3.svg" alt="">
         </div>
-        <span class="logo-upload-label">Логотип 3</span>
+        <div class="logo-row-right">
+            <span class="logo-upload-label">Логотип 3</span>
+            <div class="logo-individual-slider">
+                <input type="range" id="logoIndSize3" min="50" max="150" value="100" step="1" oninput="updateCanvas()">
+                <span class="slider-value" id="logoIndSizeValue3">100%</span>
+            </div>
+        </div>
         <button class="logo-remove-btn" id="logoRemove3" onclick="removeLogo(3)">✕</button>
     </div>
-    </div>
+</div>
     </div>
     </div>
 

@@ -589,7 +589,6 @@ input[type="range"]::-webkit-slider-thumb {
     display: flex;
     align-items: center;
     pointer-events: none;
-    overflow: hidden;
 }
 
 /* Каждый логотип — равная доля ширины */
@@ -706,7 +705,32 @@ input[type="range"]::-webkit-slider-thumb {
     color: #555;
     font-weight: 600;
 }
+/* Правая часть строки логотипа (название + ползунок) */
+.logo-row-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+}
 
+/* Индивидуальный ползунок размера логотипа */
+.logo-individual-slider {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.logo-individual-slider input[type="range"] {
+    flex: 1;
+    height: 3px;
+}
+
+.logo-individual-slider .slider-value {
+    font-size: 10px;
+    min-width: 32px;
+    color: #666;
+}
 /* ===== АДАПТИВ ===== */
 @media (max-width: 900px) {
     .app-layout { flex-direction: column; }
