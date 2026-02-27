@@ -262,47 +262,46 @@
                     </div>
                 </div>
 
-                <!-- Загрузка логотипов -->
                 <div class="input-group">
-                    <label>Загрузить логотипы</label>
+    <label>Логотипы</label>
 
-                    <!-- Логотип 1 (всегда видно) -->
-                    <div class="logo-upload-row" id="logoUploadRow1">
-                        <div class="logo-upload-box" id="logoBox1" onclick="document.getElementById('logoFile1').click()">
-                            <input type="file" id="logoFile1" accept="image/*" onchange="handleLogoUpload(1, event)">
-                            <span class="logo-upload-placeholder" id="logoPlaceholder1">1</span>
-                            <img id="logoPreview1" class="logo-preview-img" style="display:none;" alt="">
-                        </div>
-                        <span class="logo-upload-label">Логотип 1</span>
-                        <button class="logo-remove-btn" id="logoRemove1" style="display:none;" onclick="removeLogo(1)">✕</button>
-                    </div>
-
-                    <!-- Логотип 2 (видно при count >= 2) -->
-                    <div class="logo-upload-row" id="logoUploadRow2" style="display:none;">
-                        <div class="logo-upload-box" id="logoBox2" onclick="document.getElementById('logoFile2').click()">
-                            <input type="file" id="logoFile2" accept="image/*" onchange="handleLogoUpload(2, event)">
-                            <span class="logo-upload-placeholder" id="logoPlaceholder2">2</span>
-                            <img id="logoPreview2" class="logo-preview-img" style="display:none;" alt="">
-                        </div>
-                        <span class="logo-upload-label">Логотип 2</span>
-                        <button class="logo-remove-btn" id="logoRemove2" style="display:none;" onclick="removeLogo(2)">✕</button>
-                    </div>
-
-                    <!-- Логотип 3 (видно при count >= 3) -->
-                    <div class="logo-upload-row" id="logoUploadRow3" style="display:none;">
-                        <div class="logo-upload-box" id="logoBox3" onclick="document.getElementById('logoFile3').click()">
-                            <input type="file" id="logoFile3" accept="image/*" onchange="handleLogoUpload(3, event)">
-                            <span class="logo-upload-placeholder" id="logoPlaceholder3">3</span>
-                            <img id="logoPreview3" class="logo-preview-img" style="display:none;" alt="">
-                        </div>
-                        <span class="logo-upload-label">Логотип 3</span>
-                        <button class="logo-remove-btn" id="logoRemove3" style="display:none;" onclick="removeLogo(3)">✕</button>
-                    </div>
-                </div>
-
-            </div>
-
+    <!-- Логотип 1 -->
+    <div class="logo-upload-row" id="logoUploadRow1">
+        <div class="logo-upload-box" id="logoBox1" onclick="document.getElementById('logoFile1').click()">
+            <input type="file" id="logoFile1" accept="image/*" onchange="handleLogoUpload(1, event)">
+            <span class="logo-upload-placeholder" id="logoPlaceholder1" style="display:none;">1</span>
+            <img id="logoPreview1" class="logo-preview-img" src="assets/logo1.svg" alt="">
         </div>
+        <span class="logo-upload-label">Логотип 1</span>
+        <button class="logo-swap-btn" onclick="swapLogos(1, 2)" title="Поменять местами">⇄</button>
+        <button class="logo-remove-btn" id="logoRemove1" onclick="removeLogo(1)">✕</button>
+    </div>
+
+    <!-- Логотип 2 -->
+    <div class="logo-upload-row" id="logoUploadRow2">
+        <div class="logo-upload-box" id="logoBox2" onclick="document.getElementById('logoFile2').click()">
+            <input type="file" id="logoFile2" accept="image/*" onchange="handleLogoUpload(2, event)">
+            <span class="logo-upload-placeholder" id="logoPlaceholder2" style="display:none;">2</span>
+            <img id="logoPreview2" class="logo-preview-img" src="assets/logo2.svg" alt="">
+        </div>
+        <span class="logo-upload-label">Логотип 2</span>
+        <button class="logo-swap-btn" onclick="swapLogos(2, 3)" title="Поменять местами">⇄</button>
+        <button class="logo-remove-btn" id="logoRemove2" onclick="removeLogo(2)">✕</button>
+    </div>
+
+    <!-- Логотип 3 -->
+    <div class="logo-upload-row" id="logoUploadRow3">
+        <div class="logo-upload-box" id="logoBox3" onclick="document.getElementById('logoFile3').click()">
+            <input type="file" id="logoFile3" accept="image/*" onchange="handleLogoUpload(3, event)">
+            <span class="logo-upload-placeholder" id="logoPlaceholder3" style="display:none;">3</span>
+            <img id="logoPreview3" class="logo-preview-img" src="assets/logo3.svg" alt="">
+        </div>
+        <span class="logo-upload-label">Логотип 3</span>
+        <button class="logo-remove-btn" id="logoRemove3" onclick="removeLogo(3)">✕</button>
+    </div>
+    </div>
+    </div>
+    </div>
 
         <!-- СКАЧИВАНИЕ -->
         <div class="section">

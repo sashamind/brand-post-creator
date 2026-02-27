@@ -415,6 +415,28 @@ input[type="range"]::-webkit-slider-thumb {
     background: #e17055;
     color: #fff;
 }
+/* Кнопка смены местами логотипов */
+.logo-swap-btn {
+    width: 28px;
+    height: 28px;
+    border: none;
+    background: #2a2a3a;
+    color: #6c5ce7;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.logo-swap-btn:hover {
+    background: #6c5ce7;
+    color: #fff;
+}
 
 /* ===== ЦВЕТА ===== */
 .color-options { display: flex; gap: 8px; flex-wrap: wrap; }

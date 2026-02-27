@@ -30,15 +30,15 @@ subtext: 'забег переносится',
     frameColor: 'rgba(255,255,255,0.25)',
 
     // --- Логотипы спонсоров ---
-    logoCount: 1,
+    logoCount: 3,
     logoSize: 80,
     logoPosition: 'bottom-right',
     logoVerticalPos: 'bottom',
 
-    logoImages: {
-        1: null,
-        2: null,
-        3: null
+        logoImages: {
+        1: 'assets/logo1.svg',
+        2: 'assets/logo2.svg',
+        3: 'assets/logo3.svg'
     }
 };
 
@@ -168,7 +168,43 @@ function handleLogoUpload(index, event) {
     reader.readAsDataURL(file);
 }
 
+// =====================================================
+// СМЕНА МЕСТАМИ ЛОГОТИПОВ
+// =====================================================
+function swapLogos(indexA, indexB) {
+    // Меняем данные в state
+    const temp = state.logoImages[indexA];
+    state.logoImages[indexA] = state.logoImages[indexB];
+    state.logoImages[indexB] = temp;
 
+    // Обновляем превью в панели для обоих логотипов
+    updateLogoPreview(indexA);
+    updateLogoPreview(indexB);
+
+    updateCanvas();
+}
+
+// Обновляет превью одного логотипа в боковой панели
+function updateLogoPreview(index) {
+    const preview = document.getElementById('logoPreview' + index);
+    const placeholder = document.getElementById('logoPlaceholder' + index);
+    const box = document.getElementById('logoBox' + index);
+    const removeBtn = document.getElementById('logoRemove' + index);
+
+    if (state.logoImages[index]) {
+        preview.src = state.logoImages[index];
+        preview.style.display = 'block';
+        placeholder.style.display = 'none';
+        box.classList.add('has-logo');
+        removeBtn.style.display = 'flex';
+    } else {
+        preview.src = '';
+        preview.style.display = 'none';
+        placeholder.style.display = '';
+        box.classList.remove('has-logo');
+        removeBtn.style.display = 'none';
+    }
+}
 // =====================================================
 // УДАЛЕНИЕ ЛОГОТИПА СПОНСОРА
 // =====================================================
@@ -608,7 +644,18 @@ async function downloadPost(overlayOnly) {
     }
 }
 
-
+// При старте: показываем все строки загрузки для 3 логотипов
+// и выставляем правильную кнопку количества
+document.getElementById('logoUploadRow2').style.display = 'flex';
+document.getElementById('logoUploadRow3').style.display = 'flex';
+document.querySelectorAll('.logo-count-btn').forEach(b => {
+    b.classList.remove('active');
+    if (b.dataset.count === '3') b.classList.add('active');
+});
+// Для 3 логотипов: простые кнопки верх/низ
+document.getElementById('logoPositionGrid1').style.display = 'none';
+document.getElementById('logoPositionGrid23').style.display = '';
+document.getElementById('logoPositionLabel').textContent = 'Позиция логотипов';
 // =====================================================
 // ЗАПУСК — загрузка фото по умолчанию
 // =====================================================
