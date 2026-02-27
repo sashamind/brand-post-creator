@@ -6,7 +6,7 @@
 const state = {
     width: 1080,
     height: 1080,
-    formatName: 'Instagram',
+    formatName: 'Квадрат',
 
     heading: 'важная информация',
     subtext: 'описание вашего поста',
@@ -25,7 +25,6 @@ const state = {
     imagePosY: 0,
 
     showFrame: true,
-    showCorners: true,
     showLogo: true,
     showAccentLine: true,
     frameColor: 'rgba(255,255,255,0.25)',
@@ -36,7 +35,6 @@ const state = {
     logoPosition: 'bottom-right',
     logoVerticalPos: 'bottom',
 
-    // Данные загруженных картинок логотипов
     logoImages: {
         1: null,
         2: null,
@@ -70,7 +68,7 @@ function setFormat(btn) {
 // ЦВЕТ ТЕКСТА
 // =====================================================
 function setTextColor(swatch) {
-    document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.color-swatch:not(.frame-color)').forEach(s => s.classList.remove('active'));
     swatch.classList.add('active');
     state.textColor = swatch.dataset.color;
     updateCanvas();
@@ -87,6 +85,7 @@ function setTextAlign(btn) {
     updateCanvas();
 }
 
+
 // =====================================================
 // ЦВЕТ РАМКИ
 // =====================================================
@@ -96,6 +95,7 @@ function setFrameColor(swatch) {
     state.frameColor = swatch.dataset.color;
     updateCanvas();
 }
+
 
 // =====================================================
 // ПОЗИЦИЯ ЛОГОТИПА (для 1 логотипа — полная сетка 6 позиций)
@@ -128,11 +128,9 @@ function setLogoCount(btn) {
 
     state.logoCount = parseInt(btn.dataset.count);
 
-    // Показываем/скрываем строки загрузки логотипов в панели
     document.getElementById('logoUploadRow2').style.display = state.logoCount >= 2 ? 'flex' : 'none';
     document.getElementById('logoUploadRow3').style.display = state.logoCount >= 3 ? 'flex' : 'none';
 
-    // Переключаем вид позиции: полная сетка для 1, простые кнопки для 2-3
     if (state.logoCount === 1) {
         document.getElementById('logoPositionGrid1').style.display = '';
         document.getElementById('logoPositionGrid23').style.display = 'none';
@@ -158,7 +156,6 @@ function handleLogoUpload(index, event) {
     reader.onload = function (e) {
         state.logoImages[index] = e.target.result;
 
-        // Превью в боковой панели
         const preview = document.getElementById('logoPreview' + index);
         preview.src = e.target.result;
         preview.style.display = 'block';
@@ -266,11 +263,6 @@ function calculateScale(w, h, maxSize) {
     return Math.min(maxSize / w, maxSize / h);
 }
 
-function calculateBgPosition(posValue, zoom) {
-    if (zoom <= 100) return '50%';
-    return (50 - posValue) + '%';
-}
-
 // Превращает \n из textarea в <br> для HTML
 function textToHtml(text) {
     const escaped = text
@@ -285,7 +277,6 @@ function textToHtml(text) {
 // ПОЗИЦИОНИРОВАНИЕ КОНТЕЙНЕРА ЛОГОТИПОВ НА ХОЛСТЕ
 // =====================================================
 function applySponsorLogosPosition(container, count, padding) {
-    // Сбрасываем все стили
     container.style.top = '';
     container.style.bottom = '';
     container.style.left = '';
@@ -295,7 +286,6 @@ function applySponsorLogosPosition(container, count, padding) {
     container.style.width = '';
 
     if (count === 1) {
-        // 1 логотип: свободная позиция (6 вариантов)
         switch (state.logoPosition) {
             case 'top-left':
                 container.style.top = padding + 'px';
@@ -326,7 +316,6 @@ function applySponsorLogosPosition(container, count, padding) {
                 break;
         }
     } else {
-        // 2-3 логотипа: растягиваем на всю ширину, по краям
         container.style.left = padding + 'px';
         container.style.right = padding + 'px';
         container.style.width = 'auto';
@@ -343,7 +332,6 @@ function applySponsorLogosPosition(container, count, padding) {
 
 // =====================================================
 // ОБНОВЛЕНИЕ ОДНОГО ЛОГОТИПА НА ХОЛСТЕ
-// (картинка или текст "BRAND" по умолчанию)
 // =====================================================
 function updateSponsorLogoElement(index) {
     const logoEl = document.getElementById('sponsorLogo' + index);
@@ -352,19 +340,16 @@ function updateSponsorLogoElement(index) {
     const textEl = logoEl.querySelector('.sponsor-logo-text');
 
     if (state.logoImages[index]) {
-        // Есть картинка — показываем картинку, скрываем текст
         imgEl.src = state.logoImages[index];
         imgEl.style.display = 'block';
         imgEl.style.height = state.logoSize + 'px';
         dotEl.style.display = 'none';
         textEl.style.display = 'none';
     } else {
-        // Нет картинки — показываем текст "BRAND" с точкой
         imgEl.style.display = 'none';
         dotEl.style.display = '';
         textEl.style.display = '';
 
-        // Размер точки пропорционально
         const dotSize = Math.max(4, Math.round(state.logoSize * 0.16));
         dotEl.style.width = dotSize + 'px';
         dotEl.style.height = dotSize + 'px';
@@ -399,7 +384,6 @@ function updateCanvas() {
     state.textPosX = parseInt(document.getElementById('textPosXSlider').value);
     state.textPosY = parseInt(document.getElementById('textPosYSlider').value);
     state.showFrame = document.getElementById('toggleFrame').checked;
-    state.showCorners = document.getElementById('toggleCorners').checked;
     state.showLogo = document.getElementById('toggleLogo').checked;
     state.showAccentLine = document.getElementById('toggleAccentLine').checked;
     state.logoSize = parseInt(document.getElementById('logoSizeSlider').value);
@@ -430,26 +414,21 @@ function updateCanvas() {
     wrapper.style.height = Math.round(state.height * scale) + 'px';
 
     // --- Фото фона ---
-    // --- Фото фона ---
-// backgroundSize: "cover" гарантирует что фото всегда покрывает весь холст
-// без пустых полос. Zoom работает поверх cover — умножаем на процент.
-if (state.imageDataUrl) {
-    bgDiv.style.backgroundImage = `url(${state.imageDataUrl})`;
-    bgDiv.style.display = 'block';
+    if (state.imageDataUrl) {
+        bgDiv.style.backgroundImage = `url(${state.imageDataUrl})`;
+        bgDiv.style.display = 'block';
 
-    // Cover = 100%. При зуме увеличиваем пропорционально
-    if (state.imageZoom <= 100) {
-        bgDiv.style.backgroundSize = 'cover';
+        if (state.imageZoom <= 100) {
+            bgDiv.style.backgroundSize = 'cover';
+        } else {
+            bgDiv.style.backgroundSize = state.imageZoom + '%';
+        }
+
+        const posX = (50 - state.imagePosX) + '%';
+        const posY = (50 - state.imagePosY) + '%';
+        bgDiv.style.backgroundPosition = `${posX} ${posY}`;
+        pattern.style.display = 'none';
     } else {
-        bgDiv.style.backgroundSize = state.imageZoom + '%';
-    }
-
-    // Позиция: 50% = центр, сдвигаем ползунками
-    const posX = (50 - state.imagePosX) + '%';
-    const posY = (50 - state.imagePosY) + '%';
-    bgDiv.style.backgroundPosition = `${posX} ${posY}`;
-    pattern.style.display = 'none';
-}else {
         bgDiv.style.backgroundImage = '';
         bgDiv.style.display = 'none';
         pattern.style.display = 'block';
@@ -459,15 +438,15 @@ if (state.imageDataUrl) {
     dim.style.background = `rgba(0, 0, 0, ${state.dimOpacity})`;
 
     // --- Italic (только заголовок) ---
-state.headingItalic = document.getElementById('toggleItalic').checked;
-heading.style.fontStyle = state.headingItalic ? 'italic' : 'normal';
+    state.headingItalic = document.getElementById('toggleItalic').checked;
+    heading.style.fontStyle = state.headingItalic ? 'italic' : 'normal';
 
-// --- Заголовок ---
-heading.innerHTML = textToHtml(state.heading);
-heading.style.fontSize = state.fontSize + 'px';
-heading.style.color = state.textColor;
+    // --- Заголовок ---
+    heading.innerHTML = textToHtml(state.heading);
+    heading.style.fontSize = state.fontSize + 'px';
+    heading.style.color = state.textColor;
 
-    // --- Подзаголовок ---
+    // --- Подзаголовок (размер = 76% от заголовка) ---
     if (state.showSubtext) {
         subtextEl.innerHTML = textToHtml(state.subtext);
         subtextEl.style.fontSize = Math.round(state.fontSize * 0.76) + 'px';
@@ -505,29 +484,21 @@ heading.style.color = state.textColor;
         accentLine.style.display = 'none';
     }
 
-    // --- Элементы айдентики ---
-    document.getElementById('idFrame').style.display = state.showFrame ? '' : 'none';
+    // --- Рамка ---
+    const frameEl = document.getElementById('idFrame');
+    if (state.showFrame) {
+        frameEl.style.display = '';
+        frameEl.style.borderColor = state.frameColor;
+    } else {
+        frameEl.style.display = 'none';
+    }
 
-    ['idCornerTL', 'idCornerTR', 'idCornerBL', 'idCornerBR'].forEach(id => {
-        const frameEl = document.getElementById('idFrame');
-if (state.showFrame) {
-    frameEl.style.display = '';
-    frameEl.style.borderColor = state.frameColor;
-} else {
-    frameEl.style.display = 'none';
-}
-    });
-
-    // =====================================================
-    // ЛОГОТИПЫ СПОНСОРОВ
-    // =====================================================
+    // --- Логотипы спонсоров ---
     if (state.showLogo) {
         sponsorContainer.style.display = 'flex';
 
-        // Размер шрифта для текстовых логотипов (когда нет картинки)
         const textFontSize = Math.round(state.logoSize * 0.35);
 
-        // Показываем/скрываем нужное количество логотипов
         for (let i = 1; i <= 3; i++) {
             const logoEl = document.getElementById('sponsorLogo' + i);
 
@@ -540,16 +511,14 @@ if (state.showFrame) {
             }
         }
 
-        // Отступ от края (пропорционально размеру)
         const padding = 30;
-
-        // Позиционируем контейнер
         applySponsorLogosPosition(sponsorContainer, state.logoCount, padding);
 
     } else {
         sponsorContainer.style.display = 'none';
     }
-}
+
+} // <-- ВОТ ТУТ закрывается updateCanvas()
 
 
 // =====================================================
@@ -562,19 +531,16 @@ async function downloadPost(overlayOnly) {
     const pattern = document.getElementById('placeholderPattern');
     const wrapper = document.querySelector('.canvas-wrapper');
 
-    // Сохраняем текущий масштаб
     const savedTransform = canvas.style.transform;
     const savedWrapperW = wrapper.style.width;
     const savedWrapperH = wrapper.style.height;
 
-    // Убираем масштаб — рендерим в реальном размере
     canvas.style.transform = 'none';
     wrapper.style.width = state.width + 'px';
     wrapper.style.height = state.height + 'px';
 
     let saved = {};
     if (overlayOnly) {
-        // Для подложки: убираем фото, затемнение, паттерн
         saved.bgDisplay = bgDiv.style.display;
         saved.dimDisplay = dim.style.display;
         saved.patternDisplay = pattern.style.display;
@@ -586,7 +552,6 @@ async function downloadPost(overlayOnly) {
         canvas.style.background = 'transparent';
     }
 
-    // Даём время отрисоваться
     await new Promise(resolve => setTimeout(resolve, 150));
 
     try {
@@ -599,7 +564,6 @@ async function downloadPost(overlayOnly) {
             height: state.height,
         });
 
-        // Создаём ссылку для скачивания
         const link = document.createElement('a');
         link.download = overlayOnly
             ? `overlay_${state.width}x${state.height}.png`
@@ -612,7 +576,6 @@ async function downloadPost(overlayOnly) {
         console.error(err);
     }
 
-    // Возвращаем масштаб обратно
     canvas.style.transform = savedTransform;
     wrapper.style.width = savedWrapperW;
     wrapper.style.height = savedWrapperH;
