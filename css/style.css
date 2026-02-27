@@ -280,6 +280,142 @@ input[type="range"]::-webkit-slider-thumb {
     color: #fff;
 }
 
+/* Простые кнопки верх/низ для 2-3 логотипов */
+.logo-position-simple {
+    display: flex;
+    gap: 6px;
+}
+
+.logo-pos-simple-btn {
+    flex: 1;
+    padding: 10px;
+    background: #2a2a3a;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    color: #999;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Inter', sans-serif;
+    text-align: center;
+}
+
+.logo-pos-simple-btn:hover { background: #333348; color: #fff; }
+
+.logo-pos-simple-btn.active {
+    border-color: #6c5ce7;
+    background: rgba(108, 92, 231, 0.15);
+    color: #fff;
+}
+
+/* ===== КОЛИЧЕСТВО ЛОГОТИПОВ ===== */
+.logo-count-buttons {
+    display: flex;
+    gap: 6px;
+}
+
+.logo-count-btn {
+    flex: 1;
+    padding: 10px;
+    background: #2a2a3a;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    color: #999;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Inter', sans-serif;
+    text-align: center;
+}
+
+.logo-count-btn:hover { background: #333348; color: #fff; }
+
+.logo-count-btn.active {
+    border-color: #6c5ce7;
+    background: rgba(108, 92, 231, 0.15);
+    color: #fff;
+}
+
+/* ===== ЗАГРУЗКА ЛОГОТИПОВ ===== */
+.logo-upload-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.logo-upload-row:last-child { margin-bottom: 0; }
+
+.logo-upload-box {
+    width: 48px;
+    height: 48px;
+    border: 2px dashed #3a3a4a;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    transition: all 0.2s;
+    flex-shrink: 0;
+    position: relative;
+}
+
+.logo-upload-box:hover {
+    border-color: #6c5ce7;
+    background: rgba(108, 92, 231, 0.05);
+}
+
+.logo-upload-box.has-logo {
+    border-style: solid;
+    border-color: #6c5ce7;
+    padding: 0;
+}
+
+.logo-upload-box input[type="file"] { display: none; }
+
+.logo-upload-placeholder {
+    font-size: 16px;
+    font-weight: 700;
+    color: #555;
+}
+
+.logo-preview-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+.logo-upload-label {
+    font-size: 12px;
+    color: #888;
+    flex: 1;
+}
+
+.logo-remove-btn {
+    width: 28px;
+    height: 28px;
+    border: none;
+    background: #3a3a4a;
+    color: #999;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.2s;
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo-remove-btn:hover {
+    background: #e17055;
+    color: #fff;
+}
+
 /* ===== ЦВЕТА ===== */
 .color-options { display: flex; gap: 8px; flex-wrap: wrap; }
 
@@ -430,25 +566,43 @@ input[type="range"]::-webkit-slider-thumb {
 .identity-corner.bottom-left { bottom: 8px; left: 8px; border-bottom: 3px solid #6c5ce7; border-left: 3px solid #6c5ce7; }
 .identity-corner.bottom-right { bottom: 8px; right: 8px; border-bottom: 3px solid #6c5ce7; border-right: 3px solid #6c5ce7; }
 
-.identity-logo {
+/* ===== КОНТЕЙНЕР ЛОГОТИПОВ СПОНСОРОВ ===== */
+.sponsor-logos-container {
     position: absolute;
-    font-weight: 900;
-    color: rgba(255, 255, 255, 0.9);
-    letter-spacing: 2px;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    pointer-events: none;
+}
+
+/* Каждый логотип спонсора */
+.sponsor-logo {
     display: flex;
     align-items: center;
     gap: 6px;
-    z-index: 5;
-    white-space: nowrap;
-    /* Логотип тоже Raleway */
     font-family: 'Raleway', sans-serif;
+    font-weight: 900;
+    color: rgba(255, 255, 255, 0.9);
+    letter-spacing: 2px;
+    white-space: nowrap;
 }
 
-.identity-logo .logo-dot {
+.sponsor-logo .logo-dot {
     width: 8px; height: 8px;
     background: #6c5ce7;
     border-radius: 50%;
     flex-shrink: 0;
+}
+
+.sponsor-logo-text {
+    /* Текст "BRAND" — показывается если нет загруженной картинки */
+}
+
+.sponsor-logo-img {
+    height: 100%;
+    width: auto;
+    max-width: 150px;
+    object-fit: contain;
 }
 
 .identity-accent-line {
@@ -465,7 +619,7 @@ input[type="range"]::-webkit-slider-thumb {
     max-width: 85%;
 }
 
-/* ★ Заголовок — Raleway ExtraBold ★ */
+/* Заголовок — Raleway ExtraBold */
 .canvas-heading {
     font-family: 'Raleway', sans-serif;
     font-weight: 800;
@@ -473,7 +627,6 @@ input[type="range"]::-webkit-slider-thumb {
     letter-spacing: -1px;
     margin-bottom: 8px;
     word-wrap: break-word;
-    /* Чтобы <br> работали и пробелы/переносы сохранялись */
     white-space: pre-wrap;
 }
 

@@ -65,7 +65,7 @@
         <div class="section">
             <div class="section-title">✏️ Текст</div>
 
-            <!-- Заголовок — теперь textarea для многострочности -->
+            <!-- Заголовок -->
             <div class="input-group">
                 <label>Заголовок</label>
                 <textarea id="headingInput" oninput="updateCanvas()" class="heading-textarea" rows="2">важная информация</textarea>
@@ -205,27 +205,40 @@
                 </label>
             </div>
 
-            <!-- ЛОГОТИП -->
+            <!-- ==================== ЛОГОТИПЫ СПОНСОРОВ ==================== -->
             <div class="sub-section">
                 <div class="toggle-row">
-                    <label>Логотип</label>
+                    <label>Логотипы спонсоров</label>
                     <label class="toggle-switch">
                         <input type="checkbox" id="toggleLogo" checked onchange="updateCanvas()">
                         <span class="toggle-slider"></span>
                     </label>
                 </div>
 
+                <!-- Количество логотипов: 1, 2 или 3 -->
                 <div class="input-group" style="margin-top:8px;">
-                    <label>Размер логотипа</label>
-                    <div class="slider-row">
-                        <input type="range" id="logoSizeSlider" min="30" max="50" value="36" step="1" oninput="updateCanvas()">
-                        <span class="slider-value" id="logoSizeValue">14px</span>
+                    <label>Количество логотипов</label>
+                    <div class="logo-count-buttons">
+                        <button class="logo-count-btn active" data-count="1" onclick="setLogoCount(this)">1</button>
+                        <button class="logo-count-btn" data-count="2" onclick="setLogoCount(this)">2</button>
+                        <button class="logo-count-btn" data-count="3" onclick="setLogoCount(this)">3</button>
                     </div>
                 </div>
 
+                <!-- Размер (общий для всех логотипов) -->
                 <div class="input-group">
-                    <label>Позиция логотипа</label>
-                    <div class="logo-position-grid">
+                    <label>Размер логотипов</label>
+                    <div class="slider-row">
+                       <input type="range" id="logoSizeSlider" min="70" max="120" value="80" step="1" oninput="updateCanvas()">
+                        <span class="slider-value" id="logoSizeValue">50px</span>
+                    </div>
+                </div>
+
+                <!-- Позиция логотипа (меняется в зависимости от количества) -->
+                <div class="input-group" id="logoPositionGroup">
+                    <label id="logoPositionLabel">Позиция логотипа</label>
+                    <!-- Для 1 логотипа: полная сетка 3x2 -->
+                    <div class="logo-position-grid" id="logoPositionGrid1">
                         <button class="logo-pos-btn" data-pos="top-left" onclick="setLogoPosition(this)">↖</button>
                         <button class="logo-pos-btn" data-pos="top-center" onclick="setLogoPosition(this)">↑</button>
                         <button class="logo-pos-btn" data-pos="top-right" onclick="setLogoPosition(this)">↗</button>
@@ -233,7 +246,51 @@
                         <button class="logo-pos-btn" data-pos="bottom-center" onclick="setLogoPosition(this)">↓</button>
                         <button class="logo-pos-btn active" data-pos="bottom-right" onclick="setLogoPosition(this)">↘</button>
                     </div>
+                    <!-- Для 2-3 логотипов: только верх/низ -->
+                    <div class="logo-position-simple" id="logoPositionGrid23" style="display:none;">
+                        <button class="logo-pos-simple-btn" data-pos="top" onclick="setLogoVerticalPosition(this)">⬆ Сверху</button>
+                        <button class="logo-pos-simple-btn active" data-pos="bottom" onclick="setLogoVerticalPosition(this)">⬇ Снизу</button>
+                    </div>
                 </div>
+
+                <!-- Загрузка логотипов -->
+                <div class="input-group">
+                    <label>Загрузить логотипы</label>
+
+                    <!-- Логотип 1 (всегда видно) -->
+                    <div class="logo-upload-row" id="logoUploadRow1">
+                        <div class="logo-upload-box" id="logoBox1" onclick="document.getElementById('logoFile1').click()">
+                            <input type="file" id="logoFile1" accept="image/*" onchange="handleLogoUpload(1, event)">
+                            <span class="logo-upload-placeholder" id="logoPlaceholder1">1</span>
+                            <img id="logoPreview1" class="logo-preview-img" style="display:none;" alt="">
+                        </div>
+                        <span class="logo-upload-label">Логотип 1</span>
+                        <button class="logo-remove-btn" id="logoRemove1" style="display:none;" onclick="removeLogo(1)">✕</button>
+                    </div>
+
+                    <!-- Логотип 2 (видно при count >= 2) -->
+                    <div class="logo-upload-row" id="logoUploadRow2" style="display:none;">
+                        <div class="logo-upload-box" id="logoBox2" onclick="document.getElementById('logoFile2').click()">
+                            <input type="file" id="logoFile2" accept="image/*" onchange="handleLogoUpload(2, event)">
+                            <span class="logo-upload-placeholder" id="logoPlaceholder2">2</span>
+                            <img id="logoPreview2" class="logo-preview-img" style="display:none;" alt="">
+                        </div>
+                        <span class="logo-upload-label">Логотип 2</span>
+                        <button class="logo-remove-btn" id="logoRemove2" style="display:none;" onclick="removeLogo(2)">✕</button>
+                    </div>
+
+                    <!-- Логотип 3 (видно при count >= 3) -->
+                    <div class="logo-upload-row" id="logoUploadRow3" style="display:none;">
+                        <div class="logo-upload-box" id="logoBox3" onclick="document.getElementById('logoFile3').click()">
+                            <input type="file" id="logoFile3" accept="image/*" onchange="handleLogoUpload(3, event)">
+                            <span class="logo-upload-placeholder" id="logoPlaceholder3">3</span>
+                            <img id="logoPreview3" class="logo-preview-img" style="display:none;" alt="">
+                        </div>
+                        <span class="logo-upload-label">Логотип 3</span>
+                        <button class="logo-remove-btn" id="logoRemove3" style="display:none;" onclick="removeLogo(3)">✕</button>
+                    </div>
+                </div>
+
             </div>
 
         </div>
@@ -273,15 +330,32 @@
 
                     <div class="identity-accent-line" id="accentLine"></div>
 
-                    <!-- Текстовый блок — innerHTML для поддержки <br> -->
+                    <!-- Текстовый блок -->
                     <div class="canvas-text-block" id="textBlock">
                         <div class="canvas-heading" id="canvasHeading">важная информация</div>
                         <div class="canvas-subtext" id="canvasSubtext">описание вашего поста</div>
                     </div>
 
-                    <div class="identity-logo" id="idLogo">
-                        <span class="logo-dot"></span>
-                        BRAND
+                    <!-- Контейнер для логотипов спонсоров -->
+                    <div class="sponsor-logos-container" id="sponsorLogosContainer">
+                        <!-- Логотип 1 — текстовый по умолчанию, заменяется картинкой -->
+                        <div class="sponsor-logo" id="sponsorLogo1">
+                            <span class="logo-dot"></span>
+                            <span class="sponsor-logo-text">BRAND</span>
+                            <img class="sponsor-logo-img" id="sponsorLogoImg1" style="display:none;" alt="">
+                        </div>
+                        <!-- Логотип 2 -->
+                        <div class="sponsor-logo" id="sponsorLogo2" style="display:none;">
+                            <span class="logo-dot"></span>
+                            <span class="sponsor-logo-text">BRAND</span>
+                            <img class="sponsor-logo-img" id="sponsorLogoImg2" style="display:none;" alt="">
+                        </div>
+                        <!-- Логотип 3 -->
+                        <div class="sponsor-logo" id="sponsorLogo3" style="display:none;">
+                            <span class="logo-dot"></span>
+                            <span class="sponsor-logo-text">BRAND</span>
+                            <img class="sponsor-logo-img" id="sponsorLogoImg3" style="display:none;" alt="">
+                        </div>
                     </div>
 
                 </div>
