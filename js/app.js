@@ -28,6 +28,7 @@ const state = {
     showCorners: true,
     showLogo: true,
     showAccentLine: true,
+    frameColor: 'rgba(255,255,255,0.25)',
 
     // --- Логотипы спонсоров ---
     logoCount: 1,
@@ -86,6 +87,15 @@ function setTextAlign(btn) {
     updateCanvas();
 }
 
+// =====================================================
+// ЦВЕТ РАМКИ
+// =====================================================
+function setFrameColor(swatch) {
+    document.querySelectorAll('.frame-color').forEach(s => s.classList.remove('active'));
+    swatch.classList.add('active');
+    state.frameColor = swatch.dataset.color;
+    updateCanvas();
+}
 
 // =====================================================
 // ПОЗИЦИЯ ЛОГОТИПА (для 1 логотипа — полная сетка 6 позиций)
@@ -499,7 +509,13 @@ heading.style.color = state.textColor;
     document.getElementById('idFrame').style.display = state.showFrame ? '' : 'none';
 
     ['idCornerTL', 'idCornerTR', 'idCornerBL', 'idCornerBR'].forEach(id => {
-        document.getElementById(id).style.display = state.showCorners ? '' : 'none';
+        const frameEl = document.getElementById('idFrame');
+if (state.showFrame) {
+    frameEl.style.display = '';
+    frameEl.style.borderColor = state.frameColor;
+} else {
+    frameEl.style.display = 'none';
+}
     });
 
     // =====================================================

@@ -186,12 +186,24 @@
             <div class="section-title">✦ Элементы дизайна</div>
 
             <div class="toggle-row">
-                <label>Рамка</label>
-                <label class="toggle-switch">
-                    <input type="checkbox" id="toggleFrame" checked onchange="updateCanvas()">
-                    <span class="toggle-slider"></span>
-                </label>
-            </div>
+    <label>Рамка</label>
+    <label class="toggle-switch">
+        <input type="checkbox" id="toggleFrame" checked onchange="updateCanvas()">
+        <span class="toggle-slider"></span>
+    </label>
+</div>
+<div class="input-group" style="margin-top:8px;">
+    <label>Цвет рамки</label>
+    <div class="color-options">
+        <div class="color-swatch frame-color active" style="background:rgba(255,255,255,0.25); border:1px solid #555;" data-color="rgba(255,255,255,0.25)" onclick="setFrameColor(this)"></div>
+        <div class="color-swatch frame-color" style="background:#ffffff" data-color="#ffffff" onclick="setFrameColor(this)"></div>
+        <div class="color-swatch frame-color" style="background:#000000; border:1px solid #555;" data-color="#000000" onclick="setFrameColor(this)"></div>
+        <div class="color-swatch frame-color" style="background:#6c5ce7" data-color="#6c5ce7" onclick="setFrameColor(this)"></div>
+        <div class="color-swatch frame-color" style="background:#00cec9" data-color="#00cec9" onclick="setFrameColor(this)"></div>
+        <div class="color-swatch frame-color" style="background:#fdcb6e" data-color="#fdcb6e" onclick="setFrameColor(this)"></div>
+        <div class="color-swatch frame-color" style="background:#e17055" data-color="#e17055" onclick="setFrameColor(this)"></div>
+    </div>
+</div>
             <div class="toggle-row">
                 <label>Уголки</label>
                 <label class="toggle-switch">
