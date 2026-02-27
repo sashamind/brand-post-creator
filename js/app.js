@@ -575,10 +575,19 @@ async function downloadPost(overlayOnly) {
             height: state.height,
         });
 
+                // Формируем дату и время: 2025-01-15_18-30-45
+        const now = new Date();
+        const date = now.getFullYear()
+            + '-' + String(now.getMonth() + 1).padStart(2, '0')
+            + '-' + String(now.getDate()).padStart(2, '0')
+            + '_' + String(now.getHours()).padStart(2, '0')
+            + '-' + String(now.getMinutes()).padStart(2, '0')
+            + '-' + String(now.getSeconds()).padStart(2, '0');
+
         const link = document.createElement('a');
         link.download = overlayOnly
-            ? `overlay_${state.width}x${state.height}.png`
-            : `post_${state.width}x${state.height}.png`;
+            ? `overlay_${state.width}x${state.height}_${date}.png`
+            : `post_${state.width}x${state.height}_${date}.png`;
         link.href = result.toDataURL('image/png');
         link.click();
 
