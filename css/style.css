@@ -712,7 +712,7 @@ input[type="range"]::-webkit-slider-thumb {
     z-index: 5;
     font-family: 'Raleway', sans-serif;
     font-weight: 400;
-    font-size: 14px;
+    font-size: 28px;
     color: rgba(255, 255, 255, 0.6);
     white-space: nowrap;
     pointer-events: none;

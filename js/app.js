@@ -19,7 +19,7 @@ const state = {
     textBg: false,
     textBgColor: '#000000',
     showCredit: false,
-    creditText: 'Автор фото: Иван Иванов',
+    creditText: 'фото: Иван Иванов',
 
     imageDataUrl: null,
     dimOpacity: 0.2,
