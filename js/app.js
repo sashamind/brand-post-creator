@@ -717,6 +717,42 @@ document.getElementById('logoPositionGrid1').style.display = 'none';
 document.getElementById('logoPositionGrid23').style.display = '';
 document.getElementById('logoPositionLabel').textContent = 'Позиция логотипов';
 
+// =====================================================
+// ДВОЙНОЙ КЛИК ПО ПОСТУ — ЗАМЕНА ФОТО
+// =====================================================
+document.getElementById('postCanvas').addEventListener('dblclick', function() {
+    // Создаём временный input для выбора файла
+    var tempInput = document.createElement('input');
+    tempInput.type = 'file';
+    tempInput.accept = 'image/*';
+
+    // Когда пользователь выбрал файл
+    tempInput.addEventListener('change', function(e) {
+        var file = e.target.files[0];
+        if (!file) return;
+
+        var reader = new FileReader();
+        reader.onload = function(ev) {
+            // Сохраняем фото в state
+            state.imageDataUrl = ev.target.result;
+
+            // Обновляем превью в боковой панели тоже
+            var preview = document.getElementById('uploadPreview');
+            preview.src = ev.target.result;
+            preview.style.display = 'block';
+            document.getElementById('uploadPlaceholder').style.display = 'none';
+            document.getElementById('uploadArea').classList.add('has-image');
+
+            // Сбрасываем позицию и обновляем холст
+            resetImagePosition();
+        };
+        reader.readAsDataURL(file);
+    });
+
+    // Открываем диалог выбора файла
+    tempInput.click();
+});
+
 // Загрузка фото по умолчанию
 function loadDefaultImage() {
     var img = new Image();
