@@ -17,7 +17,7 @@ const state = {
     textPosX: 50,
     textPosY: 50,
     textBg: false,
-    textBgColor: 'rgba(0,0,0,0.5)',
+    textBgColor: '#000000',
 
     imageDataUrl: null,
     dimOpacity: 0.2,
