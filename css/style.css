@@ -706,6 +706,18 @@ input[type="range"]::-webkit-slider-thumb {
     color: #555;
     font-weight: 600;
 }
+/* ===== ПОДПИСЬ АВТОРА ФОТО ===== */
+.photo-credit {
+    position: absolute;
+    z-index: 5;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.6);
+    white-space: nowrap;
+    pointer-events: none;
+    letter-spacing: 0.5px;
+}
 /* Правая часть строки логотипа (название + ползунок) */
 .logo-row-right {
     flex: 1;

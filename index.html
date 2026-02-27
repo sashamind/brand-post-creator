@@ -233,6 +233,17 @@
                     <span class="toggle-slider"></span>
                 </label>
             </div>
+                        <!-- Подпись автора фото -->
+            <div class="toggle-row">
+                <label>Подпись автора фото</label>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="toggleCredit" onchange="updateCanvas()">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+            <div id="creditInputRow" style="display:none; margin-top:8px; margin-bottom:8px;">
+                <input type="text" id="creditInput" value="Автор фото: Иван Иванов" oninput="updateCanvas()">
+            </div>
 
             <!-- ==================== ЛОГОТИПЫ СПОНСОРОВ ==================== -->
             <div class="sub-section">
@@ -378,6 +389,8 @@
                         <div class="canvas-heading" id="canvasHeading">важная информация</div>
                         <div class="canvas-subtext" id="canvasSubtext">описание вашего поста</div>
                     </div>
+                                        <!-- Подпись автора фото -->
+                    <div class="photo-credit" id="photoCredit" style="display:none;">Автор фото: Иван Иванов</div>
 
                     <!-- Контейнер для логотипов спонсоров -->
                     <div class="sponsor-logos-container" id="sponsorLogosContainer">

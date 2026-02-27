@@ -18,6 +18,8 @@ const state = {
     textPosY: 50,
     textBg: false,
     textBgColor: '#000000',
+    showCredit: false,
+    creditText: 'Автор фото: Иван Иванов',
 
     imageDataUrl: null,
     dimOpacity: 0.2,
@@ -402,6 +404,11 @@ function updateCanvas() {
 
     // Показываем/прячем выбор цвета подложки
     document.getElementById('textBgColorRow').style.display = state.textBg ? 'block' : 'none';
+        state.showCredit = document.getElementById('toggleCredit').checked;
+    state.creditText = document.getElementById('creditInput').value;
+
+    // Показываем/прячем поле ввода подписи
+    document.getElementById('creditInputRow').style.display = state.showCredit ? 'block' : 'none';
     state.logoSize = parseInt(document.getElementById('logoSizeSlider').value);
         // Считываем индивидуальные множители размера
     for (var s = 1; s <= 3; s++) {
@@ -615,9 +622,59 @@ function updateCanvas() {
         var padding = 30;
         applySponsorLogosPosition(sponsorContainer, state.logoCount, padding);
 
-    } else {
+        } else {
         sponsorContainer.style.display = 'none';
     } // <-- закрываем if (state.showLogo)
+
+    // --- ПОДПИСЬ АВТОРА ФОТО ---
+    var creditEl = document.getElementById('photoCredit');
+    if (state.showCredit) {
+        creditEl.style.display = 'block';
+        creditEl.textContent = state.creditText;
+
+        // Сбрасываем позицию
+        creditEl.style.top = '';
+        creditEl.style.bottom = '';
+        creditEl.style.left = '';
+        creditEl.style.right = '';
+
+        var creditPadding = 34;
+
+        // Определяем где логотипы и ставим подпись на противоположную сторону
+        if (state.showLogo) {
+            if (state.logoCount === 1) {
+                // 1 лого — подпись на противоположном углу
+                if (state.logoPosition.indexOf('top') !== -1) {
+                    creditEl.style.bottom = creditPadding + 'px';
+                } else {
+                    creditEl.style.top = creditPadding + 'px';
+                }
+                if (state.logoPosition.indexOf('left') !== -1) {
+                    creditEl.style.right = creditPadding + 'px';
+                } else if (state.logoPosition.indexOf('right') !== -1) {
+                    creditEl.style.left = creditPadding + 'px';
+                } else {
+                    // Лого по центру — подпись слева
+                    creditEl.style.left = creditPadding + 'px';
+                }
+            } else {
+                // 2-3 лого — подпись на противоположной стороне по вертикали, слева
+                if (state.logoVerticalPos === 'top') {
+                    creditEl.style.bottom = creditPadding + 'px';
+                    creditEl.style.left = creditPadding + 'px';
+                } else {
+                    creditEl.style.top = creditPadding + 'px';
+                    creditEl.style.left = creditPadding + 'px';
+                }
+            }
+        } else {
+            // Логотипы выключены — подпись внизу слева
+            creditEl.style.bottom = creditPadding + 'px';
+            creditEl.style.left = creditPadding + 'px';
+        }
+    } else {
+        creditEl.style.display = 'none';
+    }
 
 } // <-- закрываем updateCanvas()
 
