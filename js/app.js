@@ -356,16 +356,16 @@ function applySponsorLogosPosition(container, count, padding) {
 // ГЛАВНАЯ ФУНКЦИЯ — ОБНОВЛЕНИЕ ХОЛСТА
 // =====================================================
 function updateCanvas() {
-    const canvas = document.getElementById('postCanvas');
-    const textBlock = document.getElementById('textBlock');
-    const heading = document.getElementById('canvasHeading');
-    const subtextEl = document.getElementById('canvasSubtext');
-    const bgDiv = document.getElementById('canvasBg');
-    const dim = document.getElementById('canvasDim');
-    const pattern = document.getElementById('placeholderPattern');
-    const accentLine = document.getElementById('accentLine');
-    const subtextInput = document.getElementById('subtextInput');
-    const sponsorContainer = document.getElementById('sponsorLogosContainer');
+    var canvas = document.getElementById('postCanvas');
+    var textBlock = document.getElementById('textBlock');
+    var heading = document.getElementById('canvasHeading');
+    var subtextEl = document.getElementById('canvasSubtext');
+    var bgDiv = document.getElementById('canvasBg');
+    var dim = document.getElementById('canvasDim');
+    var pattern = document.getElementById('placeholderPattern');
+    var accentLine = document.getElementById('accentLine');
+    var subtextInput = document.getElementById('subtextInput');
+    var sponsorContainer = document.getElementById('sponsorLogosContainer');
 
     // --- Считываем значения ---
     state.heading = document.getElementById('headingInput').value;
@@ -397,20 +397,20 @@ function updateCanvas() {
     subtextInput.classList.toggle('disabled', !state.showSubtext);
 
     // --- Размер холста ---
-    const scale = calculateScale(state.width, state.height, MAX_PREVIEW_SIZE);
+    var scale = calculateScale(state.width, state.height, MAX_PREVIEW_SIZE);
 
     canvas.style.width = state.width + 'px';
     canvas.style.height = state.height + 'px';
-    canvas.style.transform = `scale(${scale})`;
+    canvas.style.transform = 'scale(' + scale + ')';
     canvas.style.transformOrigin = 'top left';
 
-    const wrapper = document.querySelector('.canvas-wrapper');
+    var wrapper = document.querySelector('.canvas-wrapper');
     wrapper.style.width = Math.round(state.width * scale) + 'px';
     wrapper.style.height = Math.round(state.height * scale) + 'px';
 
     // --- Фото фона ---
     if (state.imageDataUrl) {
-        bgDiv.style.backgroundImage = `url(${state.imageDataUrl})`;
+        bgDiv.style.backgroundImage = 'url(' + state.imageDataUrl + ')';
         bgDiv.style.display = 'block';
 
         if (state.imageZoom <= 100) {
@@ -419,9 +419,9 @@ function updateCanvas() {
             bgDiv.style.backgroundSize = state.imageZoom + '%';
         }
 
-        const posX = (50 - state.imagePosX) + '%';
-        const posY = (50 - state.imagePosY) + '%';
-        bgDiv.style.backgroundPosition = `${posX} ${posY}`;
+        var posX = (50 - state.imagePosX) + '%';
+        var posY = (50 - state.imagePosY) + '%';
+        bgDiv.style.backgroundPosition = posX + ' ' + posY;
         pattern.style.display = 'none';
     } else {
         bgDiv.style.backgroundImage = '';
@@ -430,7 +430,7 @@ function updateCanvas() {
     }
 
     // --- Затемнение ---
-    dim.style.background = `rgba(0, 0, 0, ${state.dimOpacity})`;
+    dim.style.background = 'rgba(0, 0, 0, ' + state.dimOpacity + ')';
 
     // --- Italic ---
     state.headingItalic = document.getElementById('toggleItalic').checked;
@@ -452,39 +452,39 @@ function updateCanvas() {
     }
 
     // --- Позиция текста (30px от краёв) ---
-    const minPctX = (30 / state.width) * 100;
-    const maxPctX = 100 - minPctX;
-    const minPctY = (30 / state.height) * 100;
-    const maxPctY = 100 - minPctY;
+    var minPctX = (30 / state.width) * 100;
+    var maxPctX = 100 - minPctX;
+    var minPctY = (30 / state.height) * 100;
+    var maxPctY = 100 - minPctY;
 
-    const clampedX = Math.max(minPctX, Math.min(maxPctX, state.textPosX));
-    const clampedY = Math.max(minPctY, Math.min(maxPctY, state.textPosY));
+    var clampedX = Math.max(minPctX, Math.min(maxPctX, state.textPosX));
+    var clampedY = Math.max(minPctY, Math.min(maxPctY, state.textPosY));
 
     textBlock.style.left = clampedX + '%';
     textBlock.style.top = clampedY + '%';
-    textBlock.style.transform = `translate(${-clampedX}%, ${-clampedY}%)`;
+    textBlock.style.transform = 'translate(' + (-clampedX) + '%, ' + (-clampedY) + '%)';
     textBlock.style.textAlign = state.textAlign;
 
     // --- Акцентная линия ---
     if (state.showAccentLine) {
         accentLine.style.display = 'block';
-        const lineOffsetY = state.fontSize + 10;
+        var lineOffsetY = state.fontSize + 10;
 
         accentLine.style.left = clampedX + '%';
-        accentLine.style.top = `calc(${clampedY}% - ${lineOffsetY}px)`;
+        accentLine.style.top = 'calc(' + clampedY + '% - ' + lineOffsetY + 'px)';
         accentLine.style.bottom = '';
 
         if (state.textAlign === 'center') {
-            accentLine.style.transform = `translate(-50%, -${clampedY}%)`;
+            accentLine.style.transform = 'translate(-50%, -' + clampedY + '%)';
         } else {
-            accentLine.style.transform = `translate(-${clampedX}%, -${clampedY}%)`;
+            accentLine.style.transform = 'translate(-' + clampedX + '%, -' + clampedY + '%)';
         }
     } else {
         accentLine.style.display = 'none';
     }
 
     // --- Рамка ---
-    const frameEl = document.getElementById('idFrame');
+    var frameEl = document.getElementById('idFrame');
     if (state.showFrame) {
         frameEl.style.display = '';
         frameEl.style.borderColor = state.frameColor;
@@ -496,21 +496,33 @@ function updateCanvas() {
     if (state.showLogo) {
         sponsorContainer.style.display = 'flex';
 
-        // Размер текста для логотипов без картинки
-        const textFontSize = Math.round(state.logoSize * 0.35);
+        var textFontSize = Math.round(state.logoSize * 0.35);
 
-        for (let i = 1; i <= 3; i++) {
-            const logoEl = document.getElementById('sponsorLogo' + i);
-            const imgEl = document.getElementById('sponsorLogoImg' + i);
-            const dotEl = logoEl.querySelector('.logo-dot');
-            const textEl = logoEl.querySelector('.sponsor-logo-text');
+        for (var i = 1; i <= 3; i++) {
+            var logoEl = document.getElementById('sponsorLogo' + i);
+            var imgEl = document.getElementById('sponsorLogoImg' + i);
+            var dotEl = logoEl.querySelector('.logo-dot');
+            var textEl = logoEl.querySelector('.sponsor-logo-text');
+
+            // Сбрасываем классы выравнивания
+            logoEl.classList.remove('logo-first', 'logo-last', 'logo-center');
 
             if (i <= state.logoCount) {
-                // Показываем этот логотип
                 logoEl.style.display = 'flex';
 
+                // Назначаем классы: первый — влево, последний — вправо, остальные — центр
+                if (state.logoCount >= 2) {
+                    if (i === 1) {
+                        logoEl.classList.add('logo-first');
+                    } else if (i === state.logoCount) {
+                        logoEl.classList.add('logo-last');
+                    } else {
+                        logoEl.classList.add('logo-center');
+                    }
+                }
+
                 if (state.logoImages[i]) {
-                    // Есть картинка — показываем её с нужным размером
+                    // Есть картинка — показываем с размером из ползунка
                     imgEl.src = state.logoImages[i];
                     imgEl.style.display = 'block';
                     imgEl.style.height = state.logoSize + 'px';
@@ -525,22 +537,21 @@ function updateCanvas() {
                     textEl.style.display = '';
                     logoEl.style.fontSize = textFontSize + 'px';
 
-                    const dotSize = Math.max(4, Math.round(state.logoSize * 0.16));
+                    var dotSize = Math.max(4, Math.round(state.logoSize * 0.16));
                     dotEl.style.width = dotSize + 'px';
                     dotEl.style.height = dotSize + 'px';
                 }
             } else {
-                // Скрываем лишний логотип
                 logoEl.style.display = 'none';
             }
-        }
+        } // <-- закрываем for
 
-        const padding = 30;
+        var padding = 30;
         applySponsorLogosPosition(sponsorContainer, state.logoCount, padding);
 
     } else {
         sponsorContainer.style.display = 'none';
-    }
+    } // <-- закрываем if (state.showLogo)
 
 } // <-- закрываем updateCanvas()
 
@@ -549,21 +560,21 @@ function updateCanvas() {
 // СКАЧИВАНИЕ ПОСТА
 // =====================================================
 async function downloadPost(overlayOnly) {
-    const canvas = document.getElementById('postCanvas');
-    const bgDiv = document.getElementById('canvasBg');
-    const dim = document.getElementById('canvasDim');
-    const pattern = document.getElementById('placeholderPattern');
-    const wrapper = document.querySelector('.canvas-wrapper');
+    var canvas = document.getElementById('postCanvas');
+    var bgDiv = document.getElementById('canvasBg');
+    var dim = document.getElementById('canvasDim');
+    var pattern = document.getElementById('placeholderPattern');
+    var wrapper = document.querySelector('.canvas-wrapper');
 
-    const savedTransform = canvas.style.transform;
-    const savedWrapperW = wrapper.style.width;
-    const savedWrapperH = wrapper.style.height;
+    var savedTransform = canvas.style.transform;
+    var savedWrapperW = wrapper.style.width;
+    var savedWrapperH = wrapper.style.height;
 
     canvas.style.transform = 'none';
     wrapper.style.width = state.width + 'px';
     wrapper.style.height = state.height + 'px';
 
-    let saved = {};
+    var saved = {};
     if (overlayOnly) {
         saved.bgDisplay = bgDiv.style.display;
         saved.dimDisplay = dim.style.display;
@@ -576,10 +587,10 @@ async function downloadPost(overlayOnly) {
         canvas.style.background = 'transparent';
     }
 
-    await new Promise(resolve => setTimeout(resolve, 150));
+    await new Promise(function(resolve) { setTimeout(resolve, 150); });
 
     try {
-        const result = await html2canvas(canvas, {
+        var result = await html2canvas(canvas, {
             scale: 1,
             backgroundColor: overlayOnly ? null : '#1a1a24',
             useCORS: true,
@@ -588,18 +599,18 @@ async function downloadPost(overlayOnly) {
             height: state.height,
         });
 
-        const now = new Date();
-        const date = now.getFullYear()
+        var now = new Date();
+        var date = now.getFullYear()
             + '-' + String(now.getMonth() + 1).padStart(2, '0')
             + '-' + String(now.getDate()).padStart(2, '0')
             + '_' + String(now.getHours()).padStart(2, '0')
             + '-' + String(now.getMinutes()).padStart(2, '0')
             + '-' + String(now.getSeconds()).padStart(2, '0');
 
-        const link = document.createElement('a');
+        var link = document.createElement('a');
         link.download = overlayOnly
-            ? `overlay_${state.width}x${state.height}_${date}.png`
-            : `post_${state.width}x${state.height}_${date}.png`;
+            ? 'overlay_' + state.width + 'x' + state.height + '_' + date + '.png'
+            : 'post_' + state.width + 'x' + state.height + '_' + date + '.png';
         link.href = result.toDataURL('image/png');
         link.click();
 
@@ -630,7 +641,7 @@ document.getElementById('logoUploadRow2').style.display = 'flex';
 document.getElementById('logoUploadRow3').style.display = 'flex';
 
 // Активная кнопка "3"
-document.querySelectorAll('.logo-count-btn').forEach(b => {
+document.querySelectorAll('.logo-count-btn').forEach(function(b) {
     b.classList.remove('active');
     if (b.dataset.count === '3') b.classList.add('active');
 });
@@ -642,18 +653,18 @@ document.getElementById('logoPositionLabel').textContent = 'Позиция ло�
 
 // Загрузка фото по умолчанию
 function loadDefaultImage() {
-    const img = new Image();
+    var img = new Image();
     img.onload = function () {
-        const cvs = document.createElement('canvas');
+        var cvs = document.createElement('canvas');
         cvs.width = img.naturalWidth;
         cvs.height = img.naturalHeight;
-        const ctx = cvs.getContext('2d');
+        var ctx = cvs.getContext('2d');
         ctx.drawImage(img, 0, 0);
 
-        const dataUrl = cvs.toDataURL('image/jpeg', 0.92);
+        var dataUrl = cvs.toDataURL('image/jpeg', 0.92);
         state.imageDataUrl = dataUrl;
 
-        const preview = document.getElementById('uploadPreview');
+        var preview = document.getElementById('uploadPreview');
         preview.src = dataUrl;
         preview.style.display = 'block';
         document.getElementById('uploadPlaceholder').style.display = 'none';

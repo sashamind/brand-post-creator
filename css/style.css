@@ -589,6 +589,37 @@ input[type="range"]::-webkit-slider-thumb {
     display: flex;
     align-items: center;
     pointer-events: none;
+    overflow: hidden;
+}
+
+/* Каждый логотип — равная доля ширины */
+.sponsor-logo {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 900;
+    color: rgba(255, 255, 255, 0.9);
+    letter-spacing: 2px;
+    white-space: nowrap;
+    flex: 1 1 0;
+    justify-content: center;
+    min-width: 0;
+}
+
+/* Первый — прижат влево */
+.sponsor-logo.logo-first {
+    justify-content: flex-start;
+}
+
+/* Центральный — по центру */
+.sponsor-logo.logo-center {
+    justify-content: center;
+}
+
+/* Последний — прижат вправо */
+.sponsor-logo.logo-last {
+    justify-content: flex-end;
 }
 
 /* Каждый логотип спонсора */
