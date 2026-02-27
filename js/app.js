@@ -28,10 +28,10 @@ const state = {
     showAccentLine: true,
     frameColor: 'rgba(255,255,255,0.25)',
 
-    logoCount: 3,
+    logoCount: 2,
     logoSize: 80,
     logoPosition: 'bottom-right',
-    logoVerticalPos: 'bottom',
+    logoVerticalPos: 'top',
 
         logoImages: {
         1: 'assets/logo1.svg',
@@ -677,14 +677,14 @@ async function downloadPost(overlayOnly) {
 // ИНИЦИАЛИЗАЦИЯ ПРИ СТАРТЕ
 // =====================================================
 
-// Показываем все 3 строки загрузки логотипов
+// Показываем 2 строки загрузки логотипов (по умолчанию 2 лого)
 document.getElementById('logoUploadRow2').style.display = 'flex';
-document.getElementById('logoUploadRow3').style.display = 'flex';
+document.getElementById('logoUploadRow3').style.display = 'none';
 
-// Активная кнопка "3"
+// Активная кнопка "2"
 document.querySelectorAll('.logo-count-btn').forEach(function(b) {
     b.classList.remove('active');
-    if (b.dataset.count === '3') b.classList.add('active');
+    if (b.dataset.count === '2') b.classList.add('active');
 });
 
 // Для 3 логотипов: простые кнопки верх/низ
