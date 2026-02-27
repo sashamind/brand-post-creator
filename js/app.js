@@ -1,6 +1,5 @@
 // =====================================================
-// BRAND POST CREATOR — Логика
-// Версия 9: Мульти-логотипы спонсоров (1-3 штуки)
+// TULA MARAFON POSTS — Логика
 // =====================================================
 
 const state = {
@@ -9,7 +8,7 @@ const state = {
     formatName: 'Квадрат',
 
     heading: 'важная\nинформация',
-subtext: 'забег переносится',
+    subtext: 'забег переносится',
     showSubtext: false,
     fontSize: 50,
     textColor: '#ffffff',
@@ -29,13 +28,12 @@ subtext: 'забег переносится',
     showAccentLine: true,
     frameColor: 'rgba(255,255,255,0.25)',
 
-    // --- Логотипы спонсоров ---
     logoCount: 3,
     logoSize: 80,
     logoPosition: 'bottom-right',
     logoVerticalPos: 'bottom',
 
-        logoImages: {
+    logoImages: {
         1: 'assets/logo1.svg',
         2: 'assets/logo2.svg',
         3: 'assets/logo3.svg'
@@ -98,7 +96,7 @@ function setFrameColor(swatch) {
 
 
 // =====================================================
-// ПОЗИЦИЯ ЛОГОТИПА (для 1 логотипа — полная сетка 6 позиций)
+// ПОЗИЦИЯ ЛОГОТИПА (1 логотип — 6 позиций)
 // =====================================================
 function setLogoPosition(btn) {
     document.querySelectorAll('#logoPositionGrid1 .logo-pos-btn').forEach(b => b.classList.remove('active'));
@@ -109,7 +107,7 @@ function setLogoPosition(btn) {
 
 
 // =====================================================
-// ПОЗИЦИЯ ЛОГОТИПОВ (для 2-3 — только верх/низ)
+// ПОЗИЦИЯ ЛОГОТИПОВ (2-3 — верх/низ)
 // =====================================================
 function setLogoVerticalPosition(btn) {
     document.querySelectorAll('#logoPositionGrid23 .logo-pos-simple-btn').forEach(b => b.classList.remove('active'));
@@ -120,7 +118,7 @@ function setLogoVerticalPosition(btn) {
 
 
 // =====================================================
-// КОЛИЧЕСТВО ЛОГОТИПОВ (1, 2 или 3)
+// КОЛИЧЕСТВО ЛОГОТИПОВ
 // =====================================================
 function setLogoCount(btn) {
     document.querySelectorAll('.logo-count-btn').forEach(b => b.classList.remove('active'));
@@ -146,7 +144,7 @@ function setLogoCount(btn) {
 
 
 // =====================================================
-// ЗАГРУЗКА ЛОГОТИПА СПОНСОРА (картинка)
+// ЗАГРУЗКА ЛОГОТИПА СПОНСОРА
 // =====================================================
 function handleLogoUpload(index, event) {
     const file = event.target.files[0];
@@ -155,36 +153,30 @@ function handleLogoUpload(index, event) {
     const reader = new FileReader();
     reader.onload = function (e) {
         state.logoImages[index] = e.target.result;
-
-        const preview = document.getElementById('logoPreview' + index);
-        preview.src = e.target.result;
-        preview.style.display = 'block';
-        document.getElementById('logoPlaceholder' + index).style.display = 'none';
-        document.getElementById('logoBox' + index).classList.add('has-logo');
-        document.getElementById('logoRemove' + index).style.display = 'flex';
-
+        updateLogoPreview(index);
         updateCanvas();
     };
     reader.readAsDataURL(file);
 }
 
+
 // =====================================================
 // СМЕНА МЕСТАМИ ЛОГОТИПОВ
 // =====================================================
 function swapLogos(indexA, indexB) {
-    // Меняем данные в state
     const temp = state.logoImages[indexA];
     state.logoImages[indexA] = state.logoImages[indexB];
     state.logoImages[indexB] = temp;
 
-    // Обновляем превью в панели для обоих логотипов
     updateLogoPreview(indexA);
     updateLogoPreview(indexB);
-
     updateCanvas();
 }
 
+
+// =====================================================
 // Обновляет превью одного логотипа в боковой панели
+// =====================================================
 function updateLogoPreview(index) {
     const preview = document.getElementById('logoPreview' + index);
     const placeholder = document.getElementById('logoPlaceholder' + index);
@@ -205,20 +197,15 @@ function updateLogoPreview(index) {
         removeBtn.style.display = 'none';
     }
 }
+
+
 // =====================================================
 // УДАЛЕНИЕ ЛОГОТИПА СПОНСОРА
 // =====================================================
 function removeLogo(index) {
     state.logoImages[index] = null;
-
-    const preview = document.getElementById('logoPreview' + index);
-    preview.src = '';
-    preview.style.display = 'none';
-    document.getElementById('logoPlaceholder' + index).style.display = '';
-    document.getElementById('logoBox' + index).classList.remove('has-logo');
-    document.getElementById('logoRemove' + index).style.display = 'none';
     document.getElementById('logoFile' + index).value = '';
-
+    updateLogoPreview(index);
     updateCanvas();
 }
 
@@ -267,7 +254,7 @@ function handleImageUpload(event) {
     reader.readAsDataURL(file);
 }
 
-// Drag & drop для основного фото
+// Drag & drop
 const uploadArea = document.getElementById('uploadArea');
 
 uploadArea.addEventListener('dragover', (e) => {
@@ -299,7 +286,6 @@ function calculateScale(w, h, maxSize) {
     return Math.min(maxSize / w, maxSize / h);
 }
 
-// Превращает \n из textarea в <br> для HTML
 function textToHtml(text) {
     const escaped = text
         .replace(/&/g, '&amp;')
@@ -310,7 +296,7 @@ function textToHtml(text) {
 
 
 // =====================================================
-// ПОЗИЦИОНИРОВАНИЕ КОНТЕЙНЕРА ЛОГОТИПОВ НА ХОЛСТЕ
+// ПОЗИЦИОНИРОВАНИЕ КОНТЕЙНЕРА ЛОГОТИПОВ
 // =====================================================
 function applySponsorLogosPosition(container, count, padding) {
     container.style.top = '';
@@ -367,33 +353,6 @@ function applySponsorLogosPosition(container, count, padding) {
 
 
 // =====================================================
-// ОБНОВЛЕНИЕ ОДНОГО ЛОГОТИПА НА ХОЛСТЕ
-// =====================================================
-function updateSponsorLogoElement(index) {
-    const logoEl = document.getElementById('sponsorLogo' + index);
-    const imgEl = document.getElementById('sponsorLogoImg' + index);
-    const dotEl = logoEl.querySelector('.logo-dot');
-    const textEl = logoEl.querySelector('.sponsor-logo-text');
-
-    if (state.logoImages[index]) {
-        imgEl.src = state.logoImages[index];
-        imgEl.style.display = 'block';
-        imgEl.style.height = state.logoSize + 'px';
-        dotEl.style.display = 'none';
-        textEl.style.display = 'none';
-    } else {
-        imgEl.style.display = 'none';
-        dotEl.style.display = '';
-        textEl.style.display = '';
-
-        const dotSize = Math.max(4, Math.round(state.logoSize * 0.16));
-        dotEl.style.width = dotSize + 'px';
-        dotEl.style.height = dotSize + 'px';
-    }
-}
-
-
-// =====================================================
 // ГЛАВНАЯ ФУНКЦИЯ — ОБНОВЛЕНИЕ ХОЛСТА
 // =====================================================
 function updateCanvas() {
@@ -408,7 +367,7 @@ function updateCanvas() {
     const subtextInput = document.getElementById('subtextInput');
     const sponsorContainer = document.getElementById('sponsorLogosContainer');
 
-    // --- Считываем значения из полей ---
+    // --- Считываем значения ---
     state.heading = document.getElementById('headingInput').value;
     state.subtext = document.getElementById('subtextInput').value;
     state.showSubtext = document.getElementById('toggleSubtext').checked;
@@ -434,7 +393,7 @@ function updateCanvas() {
     document.getElementById('textPosYValue').textContent = state.textPosY + '%';
     document.getElementById('logoSizeValue').textContent = state.logoSize + 'px';
 
-    // --- Textarea подзаголовка вкл/выкл ---
+    // --- Textarea подзаголовка ---
     subtextInput.classList.toggle('disabled', !state.showSubtext);
 
     // --- Размер холста ---
@@ -473,7 +432,7 @@ function updateCanvas() {
     // --- Затемнение ---
     dim.style.background = `rgba(0, 0, 0, ${state.dimOpacity})`;
 
-    // --- Italic (только заголовок) ---
+    // --- Italic ---
     state.headingItalic = document.getElementById('toggleItalic').checked;
     heading.style.fontStyle = state.headingItalic ? 'italic' : 'normal';
 
@@ -482,7 +441,7 @@ function updateCanvas() {
     heading.style.fontSize = state.fontSize + 'px';
     heading.style.color = state.textColor;
 
-    // --- Подзаголовок (размер = 76% от заголовка) ---
+    // --- Подзаголовок ---
     if (state.showSubtext) {
         subtextEl.innerHTML = textToHtml(state.subtext);
         subtextEl.style.fontSize = Math.round(state.fontSize * 0.76) + 'px';
@@ -492,23 +451,18 @@ function updateCanvas() {
         subtextEl.style.display = 'none';
     }
 
-        // --- Позиция текста (с ограничением 30px от краёв) ---
-    // Вычисляем минимальный и максимальный % чтобы текст не подходил
-    // ближе 30px к любому краю холста
+    // --- Позиция текста (30px от краёв) ---
     const minPctX = (30 / state.width) * 100;
     const maxPctX = 100 - minPctX;
     const minPctY = (30 / state.height) * 100;
     const maxPctY = 100 - minPctY;
 
-    // Зажимаем значения в допустимый диапазон
     const clampedX = Math.max(minPctX, Math.min(maxPctX, state.textPosX));
     const clampedY = Math.max(minPctY, Math.min(maxPctY, state.textPosY));
 
-    const translateX = -clampedX;
-    const translateY = -clampedY;
     textBlock.style.left = clampedX + '%';
     textBlock.style.top = clampedY + '%';
-    textBlock.style.transform = `translate(${translateX}%, ${translateY}%)`;
+    textBlock.style.transform = `translate(${-clampedX}%, ${-clampedY}%)`;
     textBlock.style.textAlign = state.textAlign;
 
     // --- Акцентная линия ---
@@ -516,16 +470,14 @@ function updateCanvas() {
         accentLine.style.display = 'block';
         const lineOffsetY = state.fontSize + 10;
 
-        accentLine.style.left = state.textPosX + '%';
-        accentLine.style.top = `calc(${state.textPosY}% - ${lineOffsetY}px)`;
+        accentLine.style.left = clampedX + '%';
+        accentLine.style.top = `calc(${clampedY}% - ${lineOffsetY}px)`;
         accentLine.style.bottom = '';
 
         if (state.textAlign === 'center') {
-            accentLine.style.transform = `translate(-50%, -${state.textPosY}%)`;
-        } else if (state.textAlign === 'left') {
-            accentLine.style.transform = `translate(-${state.textPosX}%, -${state.textPosY}%)`;
+            accentLine.style.transform = `translate(-50%, -${clampedY}%)`;
         } else {
-            accentLine.style.transform = `translate(-${state.textPosX}%, -${state.textPosY}%)`;
+            accentLine.style.transform = `translate(-${clampedX}%, -${clampedY}%)`;
         }
     } else {
         accentLine.style.display = 'none';
@@ -540,20 +492,45 @@ function updateCanvas() {
         frameEl.style.display = 'none';
     }
 
-    // --- Логотипы спонсоров ---
+    // --- ЛОГОТИПЫ СПОНСОРОВ ---
     if (state.showLogo) {
         sponsorContainer.style.display = 'flex';
 
+        // Размер текста для логотипов без картинки
         const textFontSize = Math.round(state.logoSize * 0.35);
 
         for (let i = 1; i <= 3; i++) {
             const logoEl = document.getElementById('sponsorLogo' + i);
+            const imgEl = document.getElementById('sponsorLogoImg' + i);
+            const dotEl = logoEl.querySelector('.logo-dot');
+            const textEl = logoEl.querySelector('.sponsor-logo-text');
 
             if (i <= state.logoCount) {
+                // Показываем этот логотип
                 logoEl.style.display = 'flex';
-                logoEl.style.fontSize = textFontSize + 'px';
-                updateSponsorLogoElement(i);
+
+                if (state.logoImages[i]) {
+                    // Есть картинка — показываем её с нужным размером
+                    imgEl.src = state.logoImages[i];
+                    imgEl.style.display = 'block';
+                    imgEl.style.height = state.logoSize + 'px';
+                    imgEl.style.width = 'auto';
+                    imgEl.style.maxWidth = 'none';
+                    dotEl.style.display = 'none';
+                    textEl.style.display = 'none';
+                } else {
+                    // Нет картинки — текст "BRAND"
+                    imgEl.style.display = 'none';
+                    dotEl.style.display = '';
+                    textEl.style.display = '';
+                    logoEl.style.fontSize = textFontSize + 'px';
+
+                    const dotSize = Math.max(4, Math.round(state.logoSize * 0.16));
+                    dotEl.style.width = dotSize + 'px';
+                    dotEl.style.height = dotSize + 'px';
+                }
             } else {
+                // Скрываем лишний логотип
                 logoEl.style.display = 'none';
             }
         }
@@ -565,7 +542,7 @@ function updateCanvas() {
         sponsorContainer.style.display = 'none';
     }
 
-} // <-- ВОТ ТУТ закрывается updateCanvas()
+} // <-- закрываем updateCanvas()
 
 
 // =====================================================
@@ -611,7 +588,6 @@ async function downloadPost(overlayOnly) {
             height: state.height,
         });
 
-                // Формируем дату и время: 2025-01-15_18-30-45
         const now = new Date();
         const date = now.getFullYear()
             + '-' + String(now.getMonth() + 1).padStart(2, '0')
@@ -644,21 +620,27 @@ async function downloadPost(overlayOnly) {
     }
 }
 
-// При старте: показываем все строки загрузки для 3 логотипов
-// и выставляем правильную кнопку количества
+
+// =====================================================
+// ИНИЦИАЛИЗАЦИЯ ПРИ СТАРТЕ
+// =====================================================
+
+// Показываем все 3 строки загрузки логотипов
 document.getElementById('logoUploadRow2').style.display = 'flex';
 document.getElementById('logoUploadRow3').style.display = 'flex';
+
+// Активная кнопка "3"
 document.querySelectorAll('.logo-count-btn').forEach(b => {
     b.classList.remove('active');
     if (b.dataset.count === '3') b.classList.add('active');
 });
+
 // Для 3 логотипов: простые кнопки верх/низ
 document.getElementById('logoPositionGrid1').style.display = 'none';
 document.getElementById('logoPositionGrid23').style.display = '';
 document.getElementById('logoPositionLabel').textContent = 'Позиция логотипов';
-// =====================================================
-// ЗАПУСК — загрузка фото по умолчанию
-// =====================================================
+
+// Загрузка фото по умолчанию
 function loadDefaultImage() {
     const img = new Image();
     img.onload = function () {
